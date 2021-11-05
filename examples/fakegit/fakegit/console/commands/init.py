@@ -173,7 +173,6 @@ class InitCommand(Command):
                 "world",
                 "everybody",
                 "0xxx",
-
             ],
             nargs="?",
             default="group",

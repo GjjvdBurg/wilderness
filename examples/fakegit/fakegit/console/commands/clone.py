@@ -320,7 +320,7 @@ class CloneCommand(Command):
                 "Fail if the source repository is a shallow repository. The "
                 "clone.rejectShallow configuration variable can be used to "
                 "specify the default."
-            )
+            ),
         )
         self.add_argument(
             "--bare",
@@ -337,20 +337,20 @@ class CloneCommand(Command):
                 "refs/remotes/origin/. When this option is used, neither "
                 "remote-tracking branches nor the related configuration "
                 "variables are created."
-                )
+            ),
         )
         self.add_argument(
             "--sparse",
             help=(
                 "initialize sparse-checkout file to include only files at root"
-                ),
+            ),
             action="store_true",
             description=(
                 "Initialize the sparse-checkout file so the working directory "
                 "starts with only the files in the root of the repository. "
                 "The sparse-checkout file can be modified to grow the working "
                 "directory as needed."
-            )
+            ),
         )
 
         ###

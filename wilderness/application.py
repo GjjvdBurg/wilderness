@@ -13,8 +13,8 @@ from typing import Optional
 
 from .command import Command
 from .documentable import DocumentableMixin
-from .group import Group
 from .formatter import HelpFormatter
+from .group import Group
 from .help import HelpCommand
 from .manpages import ManPage
 
@@ -151,7 +151,7 @@ class Application(DocumentableMixin):
         return man
 
     def format_help(self):
-        #formatter = self._parser._get_formatter()
+        # formatter = self._parser._get_formatter()
         formatter = argparse.RawTextHelpFormatter(prog=self._parser.prog)
 
         # usage

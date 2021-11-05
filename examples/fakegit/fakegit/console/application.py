@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
+from fakegit.__version__ import __version__
+
 from wilderness import Application
 
 from .commands import CloneCommand
 from .commands import CommitCommand
 from .commands import FetchCommand
 from .commands import InitCommand
-
-from fakegit.__version__ import __version__
 
 
 class FakeGitApplication(Application):

@@ -32,9 +32,7 @@ class ManPage:
         self._application_name = application_name
         self._command_name = command_name
         self._version = version
-        date = (
-            dt.date.today().strftime("%Y-%m-%d") if date is None else date
-        )
+        date = dt.date.today().strftime("%Y-%m-%d") if date is None else date
 
         self._title = title
         self._metadata = {
@@ -105,7 +103,7 @@ class ManPage:
 
     def header(self) -> str:
         app = self._application_name
-        date = self._metadata['Date'].replace("-", "\\-")
+        date = self._metadata["Date"].replace("-", "\\-")
         version = self._version.replace(".", "\\&.")
         header = (
             f'.TH "{self.name.upper()}" "1" "{date}" '
