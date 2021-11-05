@@ -1,0 +1,10 @@
+*/__pycache__/
+*.pyc
+build/
+cover/*
+tests/__pycache__/
+.coverage
+wilderness.egg-info/
+dist/*
+cgrep
+vgrep
