@@ -8,3 +8,6 @@ wilderness.egg-info/
 dist/*
 cgrep
 vgrep
+examples/fakegit/man/
+examples/fakegit/fakegit.egg-info/
+examples/fakegit/dist/
