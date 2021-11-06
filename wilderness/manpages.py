@@ -209,10 +209,10 @@ def manpage_builder(
             os.makedirs(output_directory, exist_ok=True)
             man = app.create_manpage()
             filename = man.export(output_directory)
-            print(f"Wrote application manpage to {filename}")
+            print(f"Wrote manpage to {filename}")
             for cmd in app.commands:
                 man = cmd.create_manpage()
                 filename = man.export(output_directory)
-                print(f"Wrote application manpage to {filename}")
+                print(f"Wrote manpage to {filename}")
 
     return build_manpages
