@@ -15,6 +15,7 @@ This file is part of Wilderness.
 
 import argparse
 
+from typing import Dict
 from typing import Optional
 
 from .formatter import HelpFormatter
@@ -22,31 +23,39 @@ from .manpages import ManPage
 
 
 class DocumentableMixin:
-    _description = None
+    _description = None  # type: Optional[str]
+    _parser = None  # type: Optional[argparse.ArgumentParser]
+    _arg_help = {}  # type: Dict[str, str]
+    _extra_sections = {}  # type: Dict[str, str]
 
     @property
     def description(self) -> Optional[str]:
         return self._description
 
+    @property
+    def parser(self) -> argparse.ArgumentParser:
+        assert self._parser is not None
+        return self._parser
+
     def get_synopsis(self, width: int = 80) -> str:
         optionals = []
         positionals = []
-        for action in self._parser._actions:
+        for action in self.parser._actions:
             if action.option_strings:
                 optionals.append(action)
             else:
                 positionals.append(action)
 
-        helpfmt = HelpFormatter(prog=self._parser.prog)
+        helpfmt = HelpFormatter(prog=self.parser.prog)
         format = helpfmt._format_actions_usage
         _, parts = format(
             optionals + positionals,
-            self._parser._mutually_exclusive_groups,
+            self.parser._mutually_exclusive_groups,
             return_parts=True,
         )
 
         text = ""
-        line = self._parser.prog
+        line = self.parser.prog
         lead = len(line) + 1
         for item in parts:
             if item is None:
@@ -61,7 +70,7 @@ class DocumentableMixin:
 
     def get_options_text(self) -> str:
         text = []
-        for action in self._parser._get_optional_actions():
+        for action in self.parser._get_optional_actions():
             desc = self._arg_help.get(action.dest, action.help)
             if desc is argparse.SUPPRESS or desc is None:
                 continue
@@ -71,7 +80,7 @@ class DocumentableMixin:
                 opts = ", ".join(action.option_strings)
             else:
                 if action.option_strings[0].startswith(
-                    2 * self._parser.prefix_chars
+                    2 * self.parser.prefix_chars
                 ):
                     u = action.option_strings[0]
                     if action.choices and action.default:
@@ -98,7 +107,8 @@ class DocumentableMixin:
             text.append(desc)
             text.append(".RE")
             text.append(".PP")
-        for action in self._parser._get_positional_actions():
+
+        for action in self.parser._get_positional_actions():
             desc = self._arg_help.get(action.dest, action.help)
             if desc is argparse.SUPPRESS or desc is None:
                 continue
@@ -111,7 +121,8 @@ class DocumentableMixin:
 
     def populate_manpage(self, man: ManPage) -> None:
         man.add_section_synopsis(self.get_synopsis())
-        man.add_section("description", self.description)
+        if self.description:
+            man.add_section("description", self.description)
         man.add_section("options", self.get_options_text())
         for sec in self._extra_sections:
             man.add_section(sec, self._extra_sections[sec])

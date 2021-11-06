@@ -15,6 +15,8 @@ This file is part of Wilderness.
 import argparse
 import re
 
+from typing import Dict
+
 
 class HelpFormatter(argparse.HelpFormatter):
     def __init__(self, *args, **kwargs):
@@ -24,7 +26,7 @@ class HelpFormatter(argparse.HelpFormatter):
     def _format_actions_usage(self, actions, groups, return_parts=False):
         # find group indices and identify actions in groups
         group_actions = set()
-        inserts = {}
+        inserts = {}  # type: Dict[int, str]
         for group in groups:
             try:
                 start = actions.index(group._group_actions[0])

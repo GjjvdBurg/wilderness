@@ -39,6 +39,7 @@ class HelpCommand(Command):
             print("Error: man command not available.", file=sys.stderr)
             return 1
 
+        assert self.application
         app_name = self.application.name
         if cmd is None:
             cp = subprocess.run(["man", f"{app_name}"])

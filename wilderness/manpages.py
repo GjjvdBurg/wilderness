@@ -19,6 +19,7 @@ from distutils.core import Command
 from typing import TYPE_CHECKING
 from typing import List
 from typing import Optional
+from typing import Type
 
 if TYPE_CHECKING:
     from wilderness.application import Application
@@ -32,12 +33,13 @@ class ManPage:
         command_name: Optional[str] = None,
         date: Optional[str] = None,
         title: Optional[str] = None,
-        version: Optional[str] = None,
+        version: Optional[str] = "",
     ):
 
         self._application_name = application_name
         self._command_name = command_name
         self._version = version
+
         date = dt.date.today().strftime("%Y-%m-%d") if date is None else date
 
         self._title = title
@@ -108,6 +110,9 @@ class ManPage:
         return text
 
     def header(self) -> str:
+        assert isinstance(self._metadata["Date"], str)
+        assert isinstance(self._version, str)
+
         app = self._application_name
         date = self._metadata["Date"].replace("-", "\\-")
         version = self._version.replace(".", "\\&.")
@@ -119,6 +124,8 @@ class ManPage:
         return header
 
     def section_name(self) -> str:
+        if self._title is None:
+            return f'.SH "NAME"\n{self.name}'
         return f'.SH "NAME"\n{self.name} \\- {self._title}'
 
     def add_section_synopsis(self, synopsis: str) -> None:
@@ -133,12 +140,12 @@ class ManPage:
         self._page.extend(text)
 
     def add_section(self, label: str, text: str) -> None:
-        text = [
+        section = [
             f'.SH "{label.upper()}"',
             ".sp",
             self.groffify(text),
         ]
-        self._page.extend(text)
+        self._page.extend(section)
 
     def groffify(self, text: str) -> str:
         output = []
@@ -186,10 +193,9 @@ class ManPage:
 
 def manpage_builder(
     app: "Application", output_directory: str = "man"
-) -> Command:
+) -> Type[Command]:
     class build_manpages(Command):
         description = f"Generate manpages for {app.name}"
-        user_options = []
 
         def initialize_options(self):
             pass

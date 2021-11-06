@@ -33,7 +33,11 @@ class Group:
         self._app = None  # type: Optional[Application]
 
     @property
-    def title(self) -> str:
+    def application(self) -> Optional[Application]:
+        return self._app
+
+    @property
+    def title(self) -> Optional[str]:
         return self._title
 
     @property
@@ -54,4 +58,5 @@ class Group:
 
     def add(self, command: "Command") -> None:
         self._command_map[command.name] = command
-        self._app._add_command(command)
+        assert self.application is not None
+        self.application._add_command(command)

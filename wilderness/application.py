@@ -53,14 +53,15 @@ class Application(DocumentableMixin):
 
         self._parser = argparse.ArgumentParser(
             prog=name, formatter_class=HelpFormatter
-        )
+        )  # type: argparse.ArgumentParser
+
         self._subparsers = self._parser.add_subparsers(
             dest="target", metavar=self._cmd_name
         )
 
-        self._command_map = {}
-        self._group_map = {}
-        self._root_group = None
+        self._command_map = {}  # type: Dict[str, Command]
+        self._group_map = {}  # type: Dict[str, Group]
+        self._root_group = None  # type: Optional[Group]
         self._arg_help = {}
 
         self._extra_sections = {} if extra_sections is None else extra_sections
@@ -75,20 +76,12 @@ class Application(DocumentableMixin):
         return self._name
 
     @property
-    def version(self) -> str:
-        return self._version
-
-    @property
     def author(self) -> str:
         return self._author
 
     @property
-    def title(self) -> str:
-        return self._title
-
-    @property
-    def description(self) -> str:
-        return self._description
+    def version(self) -> str:
+        return self._version
 
     @property
     def commands(self) -> List[Command]:
@@ -173,6 +166,14 @@ class Application(DocumentableMixin):
         formatter.add_text(self._header)
 
         # add commands from root group
+        if self._root_group:
+            if self._root_group.title:
+                formatter.start_section(self._root_group.title)
+            actions = self._root_group.commands_as_actions()
+            formatter.add_arguments(actions)
+            formatter.end_section()
+
+        # add commands from other groups
         for group in self._group_map.values():
             formatter.start_section(group.title)
             actions = group.commands_as_actions()

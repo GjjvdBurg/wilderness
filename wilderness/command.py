@@ -30,7 +30,7 @@ if TYPE_CHECKING:
 class Command(DocumentableMixin, metaclass=abc.ABCMeta):
     def __init__(
         self,
-        name: Optional[str] = None,
+        name: str,
         title: Optional[str] = None,
         description: Optional[str] = None,
         extra_sections: Optional[Dict[str, str]] = None,
@@ -41,15 +41,14 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
         self._description = description
         self._extra_sections = {} if extra_sections is None else extra_sections
 
-        self._parser = None  # type: argparse.ArgumentParser
-        self._args = None  # type: argparse.Namespace
-        self._arg_help = {}
+        self._parser = None  # type: Optional[argparse.ArgumentParser]
+        self._args = None  # type: Optional[argparse.Namespace]
 
         self._application = None  # type: Optional[Application]
         self._add_help = add_help
 
     @property
-    def application(self) -> "Application":
+    def application(self) -> Optional["Application"]:
         return self._application
 
     @property
@@ -57,14 +56,11 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
         return self._name
 
     @property
-    def title(self) -> str:
+    def title(self) -> Optional[str]:
         return self._title
 
-    @property
-    def description(self) -> str:
-        return self._description
-
     def add_argument(self, *args, **kwargs):
+        assert self._parser is not None
         description = kwargs.pop("description", None)
         action = self._parser.add_argument(*args, **kwargs)
         self._arg_help[action.dest] = description
@@ -87,6 +83,7 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
         pass
 
     def create_manpage(self) -> ManPage:
+        assert self.application is not None
         man = ManPage(
             self.application.name,
             command_name=self.name,
