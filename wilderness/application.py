@@ -63,13 +63,12 @@ class Application(DocumentableMixin):
             prog=name, formatter_class=HelpFormatter
         )  # type: argparse.ArgumentParser
 
-        self._subparsers = self._parser.add_subparsers(
-            dest="target", metavar=self._cmd_name
-        )
+        self._subparsers = None
 
         self._command_map = {}  # type: Dict[str, Command]
         self._group_map = {}  # type: Dict[str, Group]
         self._root_group = None  # type: Optional[Group]
+        self._args = None  # type: Optional[argparse.Namespace]
 
         self._prolog = prolog
         self._epilog = epilog
@@ -92,6 +91,10 @@ class Application(DocumentableMixin):
         return self._version
 
     @property
+    def args(self) -> Optional[argparse.Namespace]:
+        return self._args
+
+    @property
     def commands(self) -> List[Command]:
         cmds = []
         if self._root_group:
@@ -107,6 +110,10 @@ class Application(DocumentableMixin):
         return action
 
     def add(self, command: Command):
+        if self._subparsers is None:
+            self._subparsers = self._parser.add_subparsers(
+                dest="target", metavar=self._cmd_name
+            )
         if self._root_group is None:
             self._root_group = Group(title="Available commands")
             self._root_group.set_app(self)
@@ -129,11 +136,18 @@ class Application(DocumentableMixin):
         self._group_map[title] = group
         return group
 
+    def get_argument(self, name: str) -> Any:
+        return getattr(self._args, name)
+
     def register(self):
         pass
 
     def run(self) -> int:
         args = self._parser.parse_args()
+        self._args = args
+        if self._subparsers is None:
+            return
+
         if args.target is None:
             if self._default_command:
                 args.target = self._default_command
