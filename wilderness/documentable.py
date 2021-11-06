@@ -28,11 +28,17 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
         self,
         description: Optional[str] = None,
         extra_sections: Optional[Dict[str, str]] = None,
+        options_prolog: Optional[str] = None,
+        options_epilog: Optional[str] = None,
     ):
         self._description = description  # type: Optional[str]
         self._parser = None  # type: Optional[argparse.ArgumentParser]
         self._arg_help = {}  # type: Dict[str, str]
         self._extra_sections = {} if extra_sections is None else extra_sections
+        self._options_extra = {
+            "prolog": options_prolog or "",
+            "epilog": options_epilog or "",
+        }
 
     @property
     def description(self) -> Optional[str]:
@@ -75,7 +81,8 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
         return text
 
     def get_options_text(self) -> str:
-        text = []
+        text = [self._options_extra["prolog"]]
+        text.append("")
         for action in self.parser._get_optional_actions():
             desc = self._arg_help.get(action.dest, action.help)
             if desc is argparse.SUPPRESS or desc is None:
@@ -123,6 +130,8 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
             text.append(desc)
             text.append(".RE")
             text.append(".PP")
+
+        text.append(self._options_extra["epilog"])
         return "\n".join(text)
 
     def populate_manpage(self, man: ManPage) -> None:

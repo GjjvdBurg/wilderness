@@ -33,11 +33,16 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
         name: str,
         title: Optional[str] = None,
         description: Optional[str] = None,
-        extra_sections: Optional[Dict[str, str]] = None,
         add_help: Optional[bool] = True,
+        extra_sections: Optional[Dict[str, str]] = None,
+        options_prolog: Optional[str] = None,
+        options_epilog: Optional[str] = None,
     ):
         super().__init__(
-            description=description, extra_sections=extra_sections
+            description=description,
+            extra_sections=extra_sections,
+            options_prolog=options_prolog,
+            options_epilog=options_epilog,
         )
         self._name = name
         self._title = title

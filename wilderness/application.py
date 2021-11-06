@@ -43,9 +43,14 @@ class Application(DocumentableMixin):
         extra_sections: Optional[Dict[str, str]] = None,
         prolog: Optional[str] = None,
         epilog: Optional[str] = None,
+        options_prolog: Optional[str] = None,
+        options_epilog: Optional[str] = None,
     ):
         super().__init__(
-            description=description, extra_sections=extra_sections
+            description=description,
+            extra_sections=extra_sections,
+            options_prolog=options_prolog,
+            options_epilog=options_epilog,
         )
 
         self._name = name
