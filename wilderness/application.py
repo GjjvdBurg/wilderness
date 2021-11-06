@@ -170,8 +170,13 @@ class Application(DocumentableMixin):
         # header
         formatter.add_text(self._header)
 
-        # add commands from root group
-        if self._root_group:
+        # add commands from root group, unless we only have help
+        only_help = (
+            self._root_group
+            and len(self._root_group) == 1
+            and self._root_group.commands[0].name == "help"
+        )
+        if self._root_group and not only_help:
             formatter.start_section(self._root_group.title)
             actions = self._root_group.commands_as_actions()
             formatter.add_arguments(actions)

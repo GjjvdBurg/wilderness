@@ -60,3 +60,6 @@ class Group:
         self._command_map[command.name] = command
         assert self.application is not None
         self.application._add_command(command)
+
+    def __len__(self) -> int:
+        return len(self.commands)
