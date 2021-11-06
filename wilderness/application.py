@@ -44,11 +44,14 @@ class Application(DocumentableMixin):
         header: Optional[str] = None,
         footer: Optional[str] = None,
     ):
+        super().__init__(
+            description=description, extra_sections=extra_sections
+        )
+
         self._name = name
         self._version = version
         self._author = "" if author is None else author
         self._title = title
-        self._description = description
         self._default_command = default_command
 
         self._parser = argparse.ArgumentParser(
@@ -62,9 +65,7 @@ class Application(DocumentableMixin):
         self._command_map = {}  # type: Dict[str, Command]
         self._group_map = {}  # type: Dict[str, Group]
         self._root_group = None  # type: Optional[Group]
-        self._arg_help = {}
 
-        self._extra_sections = {} if extra_sections is None else extra_sections
         self._header = header
         self._footer = footer
 

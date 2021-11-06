@@ -36,14 +36,13 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
         extra_sections: Optional[Dict[str, str]] = None,
         add_help: Optional[bool] = True,
     ):
+        super().__init__(
+            description=description, extra_sections=extra_sections
+        )
         self._name = name
         self._title = title
-        self._description = description
-        self._extra_sections = {} if extra_sections is None else extra_sections
 
-        self._parser = None  # type: Optional[argparse.ArgumentParser]
         self._args = None  # type: Optional[argparse.Namespace]
-
         self._application = None  # type: Optional[Application]
         self._add_help = add_help
 

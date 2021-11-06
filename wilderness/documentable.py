@@ -13,6 +13,7 @@ This file is part of Wilderness.
 
 """
 
+import abc
 import argparse
 
 from typing import Dict
@@ -22,11 +23,16 @@ from .formatter import HelpFormatter
 from .manpages import ManPage
 
 
-class DocumentableMixin:
-    _description = None  # type: Optional[str]
-    _parser = None  # type: Optional[argparse.ArgumentParser]
-    _arg_help = {}  # type: Dict[str, str]
-    _extra_sections = {}  # type: Dict[str, str]
+class DocumentableMixin(metaclass=abc.ABCMeta):
+    def __init__(
+        self,
+        description: Optional[str] = None,
+        extra_sections: Optional[Dict[str, str]] = None,
+    ):
+        self._description = description  # type: Optional[str]
+        self._parser = None  # type: Optional[argparse.ArgumentParser]
+        self._arg_help = {}  # type: Dict[str, str]
+        self._extra_sections = {} if extra_sections is None else extra_sections
 
     @property
     def description(self) -> Optional[str]:
