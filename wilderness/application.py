@@ -60,9 +60,12 @@ class Application(DocumentableMixin):
         self._default_command = default_command
 
         self._parser = argparse.ArgumentParser(
-            prog=name, formatter_class=HelpFormatter
+            prog=name,
+            description=prolog,
+            epilog=epilog,
+            formatter_class=HelpFormatter,
+            add_help=add_help,
         )  # type: argparse.ArgumentParser
-
         self._subparsers = None
 
         self._command_map = {}  # type: Dict[str, Command]
