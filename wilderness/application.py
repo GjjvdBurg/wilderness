@@ -41,8 +41,8 @@ class Application(DocumentableMixin):
         default_command: Optional[str] = None,
         add_help: bool = True,
         extra_sections: Optional[Dict[str, str]] = None,
-        header: Optional[str] = None,
-        footer: Optional[str] = None,
+        prolog: Optional[str] = None,
+        epilog: Optional[str] = None,
     ):
         super().__init__(
             description=description, extra_sections=extra_sections
@@ -66,8 +66,8 @@ class Application(DocumentableMixin):
         self._group_map = {}  # type: Dict[str, Group]
         self._root_group = None  # type: Optional[Group]
 
-        self._header = header
-        self._footer = footer
+        self._prolog = prolog
+        self._epilog = epilog
 
         if add_help:
             self.add(HelpCommand())
@@ -141,11 +141,11 @@ class Application(DocumentableMixin):
     def get_command(self, cmd_name: str) -> Optional[Command]:
         return self._command_map.get(cmd_name)
 
-    def set_header(self, header: str) -> None:
-        self._header = header
+    def set_prolog(self, prolog: str) -> None:
+        self._prolog = prolog
 
-    def set_footer(self, footer: str) -> None:
-        self._footer = footer
+    def set_epilog(self, epilog: str) -> None:
+        self._epilog = epilog
 
     def create_manpage(self) -> ManPage:
         man = ManPage(
@@ -167,8 +167,8 @@ class Application(DocumentableMixin):
             self._parser._mutually_exclusive_groups,
         )
 
-        # header
-        formatter.add_text(self._header)
+        # prolog
+        formatter.add_text(self._prolog)
 
         # add commands from root group, unless we only have help
         only_help = (
@@ -189,8 +189,8 @@ class Application(DocumentableMixin):
             formatter.add_arguments(actions)
             formatter.end_section()
 
-        # footer
-        formatter.add_text(self._footer)
+        # epilog
+        formatter.add_text(self._epilog)
 
         # determine help from format above
         return formatter.format_help()

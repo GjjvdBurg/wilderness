@@ -149,7 +149,7 @@ class FakeGitApplication(Application):
 
 def build_application() -> Application:
     app = FakeGitApplication()
-    app.set_header("These are common Git commands used in various situations:")
+    app.set_prolog("These are common Git commands used in various situations:")
 
     group = app.add_group("start a working area")
     group.add(CloneCommand())
@@ -176,7 +176,7 @@ def build_application() -> Application:
     group.add(FetchCommand())
     # group.add(PullCommand())
 
-    app.set_footer(
+    app.set_epilog(
         "'git help -a' and 'git help -g' list available subcommands and some\n"
         "concept guides. See 'git help <command>' or 'git help <concept>'\n"
         "to read about a specific subcommand or concept.\n"
