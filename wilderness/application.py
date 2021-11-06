@@ -103,7 +103,7 @@ class Application(DocumentableMixin):
 
     def add(self, command: Command):
         if self._root_group is None:
-            self._root_group = Group(title="")
+            self._root_group = Group(title="Available commands")
             self._root_group.set_app(self)
         self._root_group.add(command)
 
