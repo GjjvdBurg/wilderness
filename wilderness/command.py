@@ -56,6 +56,10 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
         return self._application
 
     @property
+    def args(self) -> Optional[argparse.Namespace]:
+        return self._args
+
+    @property
     def name(self) -> str:
         return self._name
 

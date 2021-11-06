@@ -412,6 +412,7 @@ class CloneCommand(Command):
 
     def run(self):
         print(
-            "Running clone command with repository "
+            "Running clone command with repository: "
             f"{self.get_argument('repository')}"
         )
+        print(f"\targs: {self.args}")
