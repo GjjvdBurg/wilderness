@@ -122,6 +122,9 @@ class Application(DocumentableMixin):
         self._group_map[title] = group
         return group
 
+    def register(self):
+        pass
+
     def run(self) -> int:
         args = self._parser.parse_args()
         if args.target is None:
@@ -152,8 +155,7 @@ class Application(DocumentableMixin):
         self.populate_manpage(man)
         return man
 
-    def format_help(self):
-        # formatter = self._parser._get_formatter()
+    def format_help(self) -> str:
         formatter = argparse.RawTextHelpFormatter(prog=self._parser.prog)
 
         # usage
@@ -168,8 +170,7 @@ class Application(DocumentableMixin):
 
         # add commands from root group
         if self._root_group:
-            if self._root_group.title:
-                formatter.start_section(self._root_group.title)
+            formatter.start_section(self._root_group.title)
             actions = self._root_group.commands_as_actions()
             formatter.add_arguments(actions)
             formatter.end_section()
