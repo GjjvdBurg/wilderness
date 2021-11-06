@@ -72,6 +72,8 @@ class Application(DocumentableMixin):
         if add_help:
             self.add(HelpCommand())
 
+        self.register()
+
     @property
     def name(self) -> str:
         return self._name

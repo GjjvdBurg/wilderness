@@ -91,7 +91,6 @@ class FakeGitApplication(Application):
             description=self._description,
             extra_sections=self._extra,
         )
-        self.register()
 
     def register(self):
         self.add_argument(
