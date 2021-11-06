@@ -14,14 +14,27 @@ This file is part of Wilderness.
 
 import argparse
 import re
+import textwrap
 
 from typing import Dict
 
 
 class HelpFormatter(argparse.HelpFormatter):
-    def __init__(self, *args, **kwargs):
-        kwargs["width"] = float("inf")
-        super().__init__(*args, **kwargs)
+    def _fill_text(self, text, width, indent):
+        # Minor change to _fill_text to keep newlines provided by the user in
+        # the prolog and epilog.
+        lines = text.splitlines()
+        new_lines = []
+        for line in lines:
+            new_line = textwrap.fill(
+                line,
+                width,
+                initial_indent=indent,
+                subsequent_indent=indent,
+            )
+            new_lines.append(new_line)
+        new_text = "\n".join(new_lines)
+        return new_text
 
     def _format_actions_usage(self, actions, groups, return_parts=False):
         # find group indices and identify actions in groups
