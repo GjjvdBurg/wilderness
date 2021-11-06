@@ -122,7 +122,7 @@ class Application(DocumentableMixin):
         self._group_map[title] = group
         return group
 
-    def run(self):
+    def run(self) -> int:
         args = self._parser.parse_args()
         if args.target is None:
             if self._default_command:
@@ -131,7 +131,7 @@ class Application(DocumentableMixin):
                 return self.print_help()
 
         self._command_map[args.target].set_args(args)
-        self._command_map[args.target].run()
+        return self._command_map[args.target].run()
 
     def get_command(self, cmd_name: str) -> Optional[Command]:
         return self._command_map.get(cmd_name)
