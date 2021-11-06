@@ -15,6 +15,7 @@ This file is part of Wilderness.
 import argparse
 import sys
 
+from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -107,7 +108,8 @@ class Application(DocumentableMixin):
         return cmds
 
     def add_argument(self, *args, **kwargs) -> argparse.Action:
-        description = kwargs.pop("description", None)
+        help_ = kwargs.get("help", None)
+        description = kwargs.pop("description", help_)
         action = self._parser.add_argument(*args, **kwargs)
         self._arg_help[action.dest] = description
         return action
@@ -155,7 +157,8 @@ class Application(DocumentableMixin):
             if self._default_command:
                 args.target = self._default_command
             else:
-                return self.print_help()
+                self.print_help()
+                return 1
 
         self._command_map[args.target].set_args(args)
         return self._command_map[args.target].run()
