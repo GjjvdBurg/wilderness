@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 
-"""ArgumentGroup
+"""Group definitions
+
+This module contains the definitions for the Group class, which is used to 
+collect distinct Command objects for the application.
+
+Author: G.J.J. van den Burg
+License: See the LICENSE file.
+Copyright: 2021, G.J.J. van den Burg
+
+This file is part of Wilderness.
 
 """
 

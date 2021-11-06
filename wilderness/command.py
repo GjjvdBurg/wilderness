@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 
-"""Command class
+"""Command definition
+
+This module contains the definitions for the Command class.
+
+Author: G.J.J. van den Burg
+License: See the LICENSE file.
+Copyright: 2021, G.J.J. van den Burg
+
+This file is part of Wilderness.
 
 """
 

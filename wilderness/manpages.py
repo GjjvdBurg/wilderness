@@ -2,6 +2,12 @@
 
 """Code to generate manpages
 
+Author: G.J.J. van den Burg
+License: See the LICENSE file.
+Copyright: 2021, G.J.J. van den Burg
+
+This file is part of Wilderness.
+
 """
 
 import datetime as dt

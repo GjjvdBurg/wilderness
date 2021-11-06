@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
 
+"""DocumentableMixin definitions
+
+A documentable is either an application or command, for which we can generate a 
+manpage.
+
+Author: G.J.J. van den Burg
+License: See the LICENSE file.
+Copyright: 2021, G.J.J. van den Burg
+
+This file is part of Wilderness.
+
+"""
+
 import argparse
 
 from typing import Optional
