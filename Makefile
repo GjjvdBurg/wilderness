@@ -42,10 +42,13 @@ dist: ## Make Python source distribution
 # Testing #
 ###########
 
-.PHONY: test integration integration_partial
+.PHONY: test mypy
 
 test: venv ## Run unit tests
 	source $(VENV_DIR)/bin/activate && green -vv -s 1 -a ./tests
+
+mypy: venv ## Run mypy
+	source $(VENV_DIR)/bin/activate && mypy --check-untyped-defs $(PACKAGE)
 
 #################
 # Documentation #
