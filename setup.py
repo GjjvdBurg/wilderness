@@ -15,7 +15,7 @@ LICENSE = "MIT"
 LICENSE_TROVE = "License :: OSI Approved :: MIT License"
 NAME = "wilderness"
 REQUIRES_PYTHON = ">=3.6.0"
-URL = "https://github.com/GjjvdBurg/Wilderness"
+URL = "https://github.com/GjjvdBurg/wilderness"
 VERSION = None
 
 # What packages are required for this module to be executed?
