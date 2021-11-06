@@ -33,7 +33,7 @@ class Group:
         self._app = None  # type: Optional[Application]
 
     @property
-    def application(self) -> Optional[Application]:
+    def application(self) -> Optional["Application"]:
         return self._app
 
     @property

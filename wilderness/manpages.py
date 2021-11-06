@@ -19,6 +19,7 @@ from distutils.core import Command
 from typing import TYPE_CHECKING
 from typing import List
 from typing import Optional
+from typing import Tuple
 from typing import Type
 
 if TYPE_CHECKING:
@@ -196,6 +197,7 @@ def manpage_builder(
 ) -> Type[Command]:
     class build_manpages(Command):
         description = f"Generate manpages for {app.name}"
+        user_options = []  # type: List[Tuple[str, Optional[str], str]]
 
         def initialize_options(self):
             pass
