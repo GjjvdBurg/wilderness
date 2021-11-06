@@ -1,0 +1,4 @@
+build/
+dist/
+man/
+fakedf.egg-info/
