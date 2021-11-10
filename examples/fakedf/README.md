@@ -2,7 +2,8 @@
 
 This is an example package that uses Wilderness to build a command line 
 application without subcommands. As an example, this package mimicks the Unix 
-``df`` program.
+``df`` program. See the [instructions here][instructions] on how to install 
+this package.
 
 A few aspects to note in this example:
 
@@ -22,3 +23,5 @@ A few aspects to note in this example:
 
  - The ``run`` method of the ``FakeDFApplication`` needs to call the 
    ``super().run()`` method to parse the command line arguments.
+
+[instructions]: https://github.com/GjjvdBurg/wilderness/tree/master/examples/
