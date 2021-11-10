@@ -153,6 +153,7 @@ class ManPage:
 
         lines = text.split("\n")
         for line in lines:
+            match = re.match("^\ ?\d+\.\ ", line)
             if line.startswith("* "):
                 output.append(".RS 4")
                 output.append(".ie n \\{\\")
@@ -168,8 +169,9 @@ class ManPage:
                 output.append(".RS 4")
                 output.append(self.groffiy_line(line[1:]))
                 output.append(".RE")
-            elif m := re.match("^\ ?\d+\.\ ", line):
-                label, rest = line[m.start() : m.end()], line[m.end() :]
+            elif match:
+                label = line[match.start() : match.end()]
+                rest = line[match.end() :]
                 output.append(f"\\fB{label}\\fR{self.groffiy_line(rest)}")
                 output.append(".br")
             elif line in ["", "\n"]:
