@@ -129,7 +129,11 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
                 desc = action.help
             if desc is argparse.SUPPRESS or desc is None:
                 continue
-            text.append(f"<{action.dest}>")
+
+            if action.nargs == "?":
+                text.append(f"[{action.dest}]")
+            else:
+                text.append(f"<{action.dest}>")
             text.append(".RS 4")
             text.append(desc)
             text.append(".RE")
