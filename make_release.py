@@ -207,7 +207,7 @@ class GitAddRelease(Step):
             f"Commit with title: {context['pkgname']} Release {context['version']}"
         )
         self.instruct("Embed changelog in body commit message")
-        self.print_run("git gui")
+        self.print_and_execute("git gui")
 
 
 class PushToPyPI(Step):
