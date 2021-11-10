@@ -35,7 +35,7 @@ EXTRAS = {
 
 
 def build_man():
-    from fakegit.console import build_application
+    from fakedf.console import build_application
 
     from wilderness import manpage_builder
 
