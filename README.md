@@ -37,9 +37,19 @@ Creating wilderness applications consist of the following steps:
 
 3. Minor changes to ``setup.py`` to build the manpages.
 
+## Examples
+
+Here are some examples that use Wilderness to build command line applications:
+
+* [fakegit][fakegit] -- A multi-level command line application similar to Git
+* [fakedf][fakedf] -- An application without subcommands similar to df
+
+> Add your example here by opening a pull request!
+
 # Notes
 
 License: See the LICENSE file.
+
 Author: [Gertjan van den Burg][gertjan]
 
 [argparse-manpage]: https://github.com/praiskup/argparse-manpage
