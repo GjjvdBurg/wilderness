@@ -10,7 +10,7 @@ on:
 
 jobs:
   python:
-    name: Testing signal2html
+    name: Testing wilderness
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
