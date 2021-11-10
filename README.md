@@ -41,8 +41,8 @@ Creating wilderness applications consist of the following steps:
 
 Here are some examples that use Wilderness to build command line applications:
 
-* [fakegit][fakegit] -- A multi-level command line application similar to Git
-* [fakedf][fakedf] -- An application without subcommands similar to df
+* [fakegit][fakegit] — A multi-level command line application similar to Git
+* [fakedf][fakedf] — An application without subcommands similar to df
 
 > Add your example here by opening a pull request!
 
