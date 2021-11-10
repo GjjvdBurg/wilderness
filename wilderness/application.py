@@ -165,7 +165,7 @@ class Application(DocumentableMixin):
                 return 1
 
         self._command_map[args.target].set_args(args)
-        return self._command_map[args.target].run()
+        return self._command_map[args.target].handle()
 
     def get_command(self, cmd_name: str) -> Optional[Command]:
         return self._command_map.get(cmd_name)
