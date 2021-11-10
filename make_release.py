@@ -122,7 +122,7 @@ class UpdateReadme(Step):
 class RunTests(Step):
     def action(self, context):
         self.instruct("Run the unit tests")
-        self.print_command("make test")
+        self.print_and_execute("make test && make mypy")
 
 
 class BumpVersionPackage(Step):
