@@ -84,7 +84,9 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
         text = [self._options_extra["prolog"]]
         text.append("")
         for action in self.parser._get_optional_actions():
-            desc = self._arg_help.get(action.dest, action.help)
+            desc = self._arg_help.get(action.dest)
+            if desc is None:
+                desc = action.help
             if desc is argparse.SUPPRESS or desc is None:
                 continue
 
@@ -122,7 +124,9 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
             text.append(".PP")
 
         for action in self.parser._get_positional_actions():
-            desc = self._arg_help.get(action.dest, action.help)
+            desc = self._arg_help.get(action.dest)
+            if desc is None:
+                desc = action.help
             if desc is argparse.SUPPRESS or desc is None:
                 continue
             text.append(f"<{action.dest}>")
