@@ -36,7 +36,7 @@ release: ## Make a release
 	python make_release.py
 
 dist: ## Make Python source distribution
-	python setup.py sdist
+	python setup.py sdist && python setup.py bdist_wheel --universal
 
 ###########
 # Testing #
