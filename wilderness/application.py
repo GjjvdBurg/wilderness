@@ -166,20 +166,20 @@ class Application(DocumentableMixin):
         args: Optional[List[str]] = None,
         namespace: Optional[argparse.Namespace] = None,
     ) -> int:
-        args = self._parser.parse_args(args=args, namespace=namespace)
-        self._args = args
+        parsed_args = self._parser.parse_args(args=args, namespace=namespace)
+        self._args = parsed_args
         if self._subparsers is None:
             return self.handle()
 
-        if args.target is None:
+        if self._args.target is None:
             if self._default_command:
-                args.target = self._default_command
+                self._args.target = self._default_command
             else:
                 self.print_help()
                 return 1
 
-        self._command_map[args.target].set_args(args)
-        return self._command_map[args.target].handle()
+        self._command_map[self._args.target].set_args(self._args)
+        return self._command_map[self._args.target].handle()
 
     def get_command(self, cmd_name: str) -> Optional[Command]:
         return self._command_map.get(cmd_name)
