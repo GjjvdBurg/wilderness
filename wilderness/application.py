@@ -25,6 +25,7 @@ from .documentable import DocumentableMixin
 from .formatter import HelpFormatter
 from .group import Group
 from .help import HelpCommand
+from .help import help_action_factory
 from .manpages import ManPage
 
 
@@ -59,13 +60,14 @@ class Application(DocumentableMixin):
         self._author = "" if author is None else author
         self._title = title
         self._default_command = default_command
+        self._add_help = add_help
 
         self._parser = argparse.ArgumentParser(
             prog=name,
             description=prolog,
             epilog=epilog,
             formatter_class=HelpFormatter,
-            add_help=add_help,
+            add_help=False,
         )  # type: argparse.ArgumentParser
         self._subparsers = None  # type: Optional[argparse._SubParsersAction]
 
@@ -77,7 +79,15 @@ class Application(DocumentableMixin):
         self._prolog = prolog
         self._epilog = epilog
 
-        if add_help:
+        default_prefix = "-"  # TODO: allow the user to set this and extract from self._parser
+        if self._add_help:
+            self._parser.add_argument(
+                default_prefix + "h",
+                default_prefix * 2 + "help",
+                action=help_action_factory(self),
+                default=argparse.SUPPRESS,
+                help="show this help message and exit",
+            )
             self.add(HelpCommand())
 
         self.register()
@@ -151,8 +161,12 @@ class Application(DocumentableMixin):
     def handle(self) -> int:
         return 0
 
-    def run(self) -> int:
-        args = self._parser.parse_args()
+    def run(
+        self,
+        args: Optional[List[str]] = None,
+        namespace: Optional[argparse.Namespace] = None,
+    ) -> int:
+        args = self._parser.parse_args(args=args, namespace=namespace)
         self._args = args
         if self._subparsers is None:
             return self.handle()

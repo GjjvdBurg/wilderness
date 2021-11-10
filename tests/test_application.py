@@ -42,9 +42,37 @@ class ApplicationTestCase(unittest.TestCase):
         helptext = "usage: testapp [-h] [-q] command ...\n"
         self.assertEqual(app.format_help(), helptext)
 
+        # Test that we get help without any arguments
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             status = app.run()
+        self.assertEqual(status, 1)
+        self.assertEqual(buf.getvalue(), helptext)
+
+        # Test that we get help with only -h flag
+        test_args = ["-h"]
+        buf = io.StringIO()
+        with self.assertRaises(SystemExit):
+            with contextlib.redirect_stdout(buf):
+                status = app.run(args=test_args)
+        self.assertEqual(status, 1)
+        self.assertEqual(buf.getvalue(), helptext)
+
+        # Test that we get help with only --help
+        test_args = ["--help"]
+        buf = io.StringIO()
+        with self.assertRaises(SystemExit):
+            with contextlib.redirect_stdout(buf):
+                status = app.run(args=test_args)
+        self.assertEqual(status, 1)
+        self.assertEqual(buf.getvalue(), helptext)
+
+        # Test that we get help with --help and other arguments
+        test_args = ["-q", "--help"]
+        buf = io.StringIO()
+        with self.assertRaises(SystemExit):
+            with contextlib.redirect_stdout(buf):
+                status = app.run(args=test_args)
         self.assertEqual(status, 1)
         self.assertEqual(buf.getvalue(), helptext)
 
