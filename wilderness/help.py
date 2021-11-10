@@ -1,7 +1,17 @@
 # -*- coding: utf-8 -*-
 
-"""Help command
+"""Help command definitions
 
+This module contains the definitions for our HelpCommand and our HelpAction.  
+The HelpCommand takes care of opening the manpage when the "help" subcommand is 
+called, and the HelpAction is slightly modified to use our help text formatter 
+(see the Application class).
+
+Author: G.J.J. van den Burg
+License: See the LICENSE file.
+Copyright: 2021, G.J.J. van den Burg
+
+This file is part of Wilderness.
 """
 
 import argparse
@@ -9,7 +19,6 @@ import subprocess
 import sys
 
 from typing import TYPE_CHECKING
-from typing import Optional
 
 from .command import Command
 
