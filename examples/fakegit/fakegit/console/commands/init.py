@@ -226,7 +226,7 @@ class InitCommand(Command):
             description=argparse.SUPPRESS,
         )
 
-    def run(self):
+    def handle(self):
         print(
             "Running clone command with repository "
             f"{self.get_argument('directory')}"

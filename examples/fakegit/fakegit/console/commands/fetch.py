@@ -41,7 +41,7 @@ class FetchCommand(Command):
             ),
         )
 
-    def run(self):
+    def handle(self):
         print(
             "Running git fetch, repository=%s"
             % self.get_argument("repository")

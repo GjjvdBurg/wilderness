@@ -87,7 +87,7 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def run(self) -> int:
+    def handle(self) -> int:
         pass
 
     def create_manpage(self) -> ManPage:

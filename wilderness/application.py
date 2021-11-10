@@ -147,11 +147,14 @@ class Application(DocumentableMixin):
     def register(self):
         pass
 
+    def handle(self) -> int:
+        return 0
+
     def run(self) -> int:
         args = self._parser.parse_args()
         self._args = args
         if self._subparsers is None:
-            return
+            return self.handle()
 
         if args.target is None:
             if self._default_command:

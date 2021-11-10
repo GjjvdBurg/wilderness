@@ -126,8 +126,7 @@ class FakeDFApplication(Application):
         self.add_argument("-v", action="store_true", help="(ignored)")
         self.add_argument("--version", action="version", version=__version__)
 
-    def run(self) -> int:
-        super().run()
+    def handle(self) -> int:
         print(f"Running fakedf with options: {self.args}")
         return 0
 

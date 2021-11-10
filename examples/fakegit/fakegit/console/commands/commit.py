@@ -66,5 +66,5 @@ class CommitCommand(Command):
             ),
         )
 
-    def run(self):
+    def handle(self):
         print("Running git commit, amend=%s" % self.get_argument("amend"))
