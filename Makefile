@@ -45,7 +45,9 @@ dist: ## Make Python source distribution
 .PHONY: test mypy
 
 test: venv ## Run unit tests in virtual environment
-	source $(VENV_DIR)/bin/activate && green -vv -s 1 -a ./tests
+	source $(VENV_DIR)/bin/activate && \
+		green -vv -s 1 -a ./tests && \
+		mypy --check-untyped-defs $(PACKAGE)
 
 test_direct: ## Run unit tests directly (without virtualenv)
 	pip install .[tests] && \
