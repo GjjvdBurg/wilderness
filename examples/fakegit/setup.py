@@ -5,22 +5,42 @@ import glob
 import io
 import os
 
-from fakegit.console import build_application
 from setuptools import find_packages
 from setuptools import setup
 
-from wilderness import manpage_builder
-
 # Package meta-data.
-AUTHOR = "Gertjan van den Burg"
+NAME = "fakegit"
 DESCRIPTION = "Fake Git for testing Wilderness"
+AUTHOR = "Gertjan van den Burg"
 EMAIL = "gertjanvandenburg@gmail.com"
 LICENSE = "MIT"
 LICENSE_TROVE = "License :: OSI Approved :: MIT License"
-NAME = "fakegit"
 REQUIRES_PYTHON = ">=3.6.0"
 URL = ""
 VERSION = None
+
+# What packages are required for this module to be executed?
+REQUIRED = ["wilderness"]
+
+# What packages are optional?
+docs_require = []
+test_require = []
+dev_require = []
+
+EXTRAS = {
+    "docs": docs_require,
+    "test": test_require,
+    "dev": dev_require + test_require + docs_require,
+}
+
+
+def build_man():
+    from fakegit.console import build_application
+
+    from wilderness import manpage_builder
+
+    return manpage_builder(build_application())
+
 
 # The rest you shouldn't have to touch too much :)
 # ------------------------------------------------
@@ -57,15 +77,24 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
+    license=LICENSE,
     packages=find_packages(
         exclude=["tests", "*.tests", "*.tests.*", "tests.*"]
     ),
-    install_requires=[],
-    extras_require={},
-    include_package_data=True,
-    license=LICENSE,
-    ext_modules=[],
-    data_files=[("man/man1", glob.glob("man/*.1"))],
-    cmdclass={"build_manpages": manpage_builder(build_application())},
     entry_points={"console_scripts": ["fakegit=fakegit.__main__:main"]},
+    install_requires=REQUIRED,
+    extras_require=EXTRAS,
+    include_package_data=True,
+    data_files=[("man/man1", glob.glob("man/*.1"))],
+    cmdclass={"build_manpages": build_man()},
+    classifiers=[
+        # Trove classifiers
+        # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
+        LICENSE_TROVE,
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
+    ],
 )
