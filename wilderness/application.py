@@ -67,7 +67,7 @@ class Application(DocumentableMixin):
             formatter_class=HelpFormatter,
             add_help=add_help,
         )  # type: argparse.ArgumentParser
-        self._subparsers = None
+        self._subparsers = None  # type: Optional[argparse._SubParsersAction]
 
         self._command_map = {}  # type: Dict[str, Command]
         self._group_map = {}  # type: Dict[str, Group]
@@ -125,6 +125,7 @@ class Application(DocumentableMixin):
         self._root_group.add(command)
 
     def _add_command(self, command: Command):
+        assert self._subparsers is not None
         self._command_map[command._name] = command
         cmd_parser = self._subparsers.add_parser(
             command.name,
