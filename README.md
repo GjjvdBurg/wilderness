@@ -5,8 +5,8 @@
 [![Downloads](https://pepy.tech/badge/wilderness)](https://pepy.tech/project/wilderness)
 
 Wilderness is a light wrapper around [argparse][argparse] for creating command 
-line applications with multiple subcommands, such as [Git][git]. Wilderness 
-also makes it easy to generate man pages for your application.
+line applications with multiple subcommands, in the style of [Git][git]. 
+Wilderness also makes it easy to generate man pages for your application.
 
 Wilderness is heavily inspired by [Cleo][cleo] and 
 [argparse-manpage][argparse-manpage], but aims to stick as closely as possible 
@@ -41,8 +41,10 @@ Creating wilderness applications consist of the following steps:
 
 Here are some examples that use Wilderness to build command line applications:
 
-* [fakegit][fakegit] — A multi-level command line application similar to Git
-* [fakedf][fakedf] — An application without subcommands similar to df
+| Repository | Description |
+|------------|-------------|
+| [fakegit][fakegit] | A multi-level command line application similar to Git |
+| [fakedf][fakedf] | An application without subcommands similar to df |
 
 > Add your example here by opening a pull request!
 
