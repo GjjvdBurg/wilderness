@@ -57,7 +57,8 @@ class HelpCommand(Command):
         assert self.application
         app_name = self.application.name
         if cmd is None:
-            cp = subprocess.run(["man", f"{app_name}"])
+            self.application.print_help()
+            return 1
         else:
             cp = subprocess.run(["man", f"{app_name}-{cmd}"])
         return cp.returncode

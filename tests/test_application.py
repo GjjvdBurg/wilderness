@@ -76,6 +76,14 @@ class ApplicationTestCase(unittest.TestCase):
         self.assertEqual(status, 1)
         self.assertEqual(buf.getvalue(), helptext)
 
+        # Test that we get help when help command supplied
+        test_args = ["help"]
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            status = app.run(args=test_args)
+        self.assertEqual(status, 1)
+        self.assertEqual(buf.getvalue(), helptext)
+
 
 if __name__ == "__main__":
     unittest.main()
