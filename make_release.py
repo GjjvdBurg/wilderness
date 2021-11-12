@@ -237,7 +237,6 @@ def main(target=None):
         ("push1", PushToGitHub()),
         ("ci1", WaitForCI()),
         ("bumpversion", BumpVersionPackage()),
-        ("gitadd2", GitAdd()),
         ("changelog", UpdateChangelog()),
         ("readme", UpdateReadme()),
         ("dist", MakeDist()),
