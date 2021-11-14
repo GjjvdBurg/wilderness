@@ -22,6 +22,7 @@ import colorama
 
 URLS = {
     "CI": "https://github.com/GjjvdBurg/wilderness/actions",
+    "tags": "https://github.com/GjjvdBurg/wilderness/tags",
 }
 
 
@@ -226,6 +227,12 @@ class WaitForCI(Step):
         self.instruct("Wait for CI to complete and verify that its successful")
 
 
+class GitHubRelease(Step):
+    def action(self, context):
+        webbrowser.open(URLS["tags"])
+        self.instruct("Create release from tag and embed release notes")
+
+
 def main(target=None):
     colorama.init()
     procedure = [
@@ -248,6 +255,7 @@ def main(target=None):
         ("pypi", PushToPyPI()),
         ("tagfinal", GitTagVersion()),
         ("push2", PushToGitHub()),
+        ("gh_release", GitHubRelease()),
     ]
     context = {}
     context["pkgname"] = get_package_name()
