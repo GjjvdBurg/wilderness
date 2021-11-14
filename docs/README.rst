@@ -18,6 +18,11 @@ Wilderness
    :alt: Downloads
 
 
+.. image:: https://readthedocs.org/projects/wilderness/badge/?version=latest
+   :target: https://wilderness.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
+
+
 Wilderness is a light wrapper around `argparse <https://docs.python.org/3/library/argparse.html>`_ for creating command 
 line applications with multiple subcommands, in the style of `Git <https://git-scm.com/>`_. 
 Wilderness also makes it easy to generate man pages for your application.

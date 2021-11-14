@@ -3,6 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/wilderness.svg)](https://pypi.org/project/wilderness)
 [![Build status](https://github.com/GjjvdBurg/wilderness/workflows/build/badge.svg)](https://github.com/GjjvdBurg/wilderness/actions)
 [![Downloads](https://pepy.tech/badge/wilderness)](https://pepy.tech/project/wilderness)
+[![Documentation Status](https://readthedocs.org/projects/wilderness/badge/?version=latest)](https://wilderness.readthedocs.io/en/latest/?badge=latest)
 
 Wilderness is a light wrapper around [argparse][argparse] for creating command 
 line applications with multiple subcommands, in the style of [Git][git]. 
