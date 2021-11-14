@@ -5,6 +5,8 @@ import glob
 import io
 import os
 
+from distutils.core import Command
+
 from setuptools import find_packages
 from setuptools import setup
 
@@ -34,12 +36,22 @@ EXTRAS = {
 }
 
 
-def build_man():
-    from fakedf.console import build_application
+class manpages(Command):
+    description = "Generate manpages"
+    user_options = []
 
-    from wilderness import manpage_builder
+    def initialize_options(self):
+        pass
 
-    return manpage_builder(build_application())
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        from fakedf.console import build_application
+
+        from wilderness import build_manpages
+
+        build_manpages(build_application())
 
 
 # The rest you shouldn't have to touch too much :)
@@ -86,7 +98,7 @@ setup(
     extras_require=EXTRAS,
     include_package_data=True,
     data_files=[("man/man1", glob.glob("man/*.1"))],
-    cmdclass={"build_manpages": build_man()},
+    cmdclass={"build_manpages": manpages},
     classifiers=[
         # Trove classifiers
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers

@@ -13,13 +13,9 @@ import datetime as dt
 import os
 import re
 
-from distutils.core import Command
-
 from typing import TYPE_CHECKING
 from typing import List
 from typing import Optional
-from typing import Tuple
-from typing import Type
 
 if TYPE_CHECKING:
     from wilderness.application import Application
@@ -193,27 +189,23 @@ class ManPage:
         return filename
 
 
-def manpage_builder(
-    app: "Application", output_directory: str = "man"
-) -> Type[Command]:
-    class build_manpages(Command):
-        description = f"Generate manpages for {app.name}"
-        user_options = []  # type: List[Tuple[str, Optional[str], str]]
+def build_manpages(app: "Application", output_directory: str = "man") -> None:
+    """Write manpages to the output directory
 
-        def initialize_options(self):
-            pass
+    Parameters
+    ----------
+    app : Application
+        The application for which to generate manpages.
 
-        def finalize_options(self):
-            pass
+    output_directory : str
+        The output directory to which to write the manpages.
 
-        def run(self):
-            os.makedirs(output_directory, exist_ok=True)
-            man = app.create_manpage()
-            filename = man.export(output_directory)
-            print(f"Wrote manpage to {filename}")
-            for cmd in app.commands:
-                man = cmd.create_manpage()
-                filename = man.export(output_directory)
-                print(f"Wrote manpage to {filename}")
-
-    return build_manpages
+    """
+    os.makedirs(output_directory, exist_ok=True)
+    man = app.create_manpage()
+    filename = man.export(output_directory)
+    print(f"Wrote manpage to {filename}")
+    for cmd in app.commands:
+        man = cmd.create_manpage()
+        filename = man.export(output_directory)
+        print(f"Wrote manpage to {filename}")
