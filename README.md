@@ -48,7 +48,7 @@ Here are some examples that use Wilderness to build command line applications:
 
 > Add your example here by opening a pull request!
 
-# Notes
+## Notes
 
 License: See the LICENSE file.
 
