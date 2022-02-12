@@ -67,9 +67,9 @@ docs: doc
 
 doc: venv ## Build documentation
 	source $(VENV_DIR)/bin/activate && \
-		m2r README.md && mv README.rst $(DOC_DIR)
+		m2r2 README.md && mv README.rst $(DOC_DIR)
 	source $(VENV_DIR)/bin/activate && \
-		m2r CHANGELOG.md && mv CHANGELOG.rst $(DOC_DIR)
+		m2r2 CHANGELOG.md && mv CHANGELOG.rst $(DOC_DIR)
 	cd $(DOC_DIR) && \
 		rm -f source/*.rst && \
 		source $(VENV_DIR)/bin/activate && \

@@ -21,7 +21,7 @@ VERSION = None
 # What packages are required for this module to be executed?
 REQUIRED = []
 
-docs_require = ["sphinx", "sphinx-rtd-theme", "m2r"]
+docs_require = ["sphinx", "sphinx-rtd-theme", "m2r2"]
 test_require = ["green", "mypy"]
 dev_require = []
 
