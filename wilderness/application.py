@@ -14,7 +14,6 @@ This file is part of Wilderness.
 import argparse
 import sys
 
-from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -26,6 +25,7 @@ from .group import Group
 from .help import HelpCommand
 from .help import help_action_factory
 from .manpages import ManPage
+from .parser import ArgumentParser
 
 
 class Application(DocumentableMixin):
@@ -61,13 +61,13 @@ class Application(DocumentableMixin):
         self._default_command = default_command
         self._add_help = add_help
 
-        self._parser = argparse.ArgumentParser(
+        self._parser = ArgumentParser(
             prog=name,
             description=prolog,
             epilog=epilog,
             formatter_class=HelpFormatter,
             add_help=False,
-        )  # type: argparse.ArgumentParser
+        )  # type: ArgumentParser
         self._subparsers = None  # type: Optional[argparse._SubParsersAction]
 
         self._command_map = {}  # type: Dict[str, Command]
@@ -93,22 +93,27 @@ class Application(DocumentableMixin):
 
     @property
     def name(self) -> str:
+        """The name of the application"""
         return self._name
 
     @property
     def author(self) -> str:
+        """The author(s) of the application"""
         return self._author
 
     @property
     def version(self) -> str:
+        """The version of the package or application"""
         return self._version
 
     @property
     def args(self) -> Optional[argparse.Namespace]:
+        """The parsed command line arguments"""
         return self._args
 
     @property
     def commands(self) -> List[Command]:
+        """List the commands registered to the application"""
         cmds = []
         if self._root_group:
             cmds.extend(list(self._root_group.commands))
@@ -117,6 +122,13 @@ class Application(DocumentableMixin):
         return cmds
 
     def add_argument(self, *args, **kwargs) -> argparse.Action:
+        """Add an argument to the application
+
+        This wraps the argparse.ArgumentParser.add_argument method, with the
+        minor difference that it supports a "description" keyword argument,
+        which will be used to provide a long help message for the argument in
+        the man page.
+        """
         help_ = kwargs.get("help", None)
         description = kwargs.pop("description", help_)
         action = self._parser.add_argument(*args, **kwargs)
@@ -151,37 +163,46 @@ class Application(DocumentableMixin):
         self._group_map[title] = group
         return group
 
-    def get_argument(self, name: str) -> Any:
-        return getattr(self._args, name)
-
     def register(self):
         pass
 
     def handle(self) -> int:
-        return 0
+        return 1
 
     def run(
         self,
         args: Optional[List[str]] = None,
         namespace: Optional[argparse.Namespace] = None,
+        exit_on_error: Optional[bool] = True,
     ) -> int:
+        self._parser.exit_on_error = exit_on_error
         parsed_args = self._parser.parse_args(args=args, namespace=namespace)
-        self._args = parsed_args
+        self.set_args(parsed_args)
         if self._subparsers is None:
             return self.handle()
 
-        if self._args.target is None:
+        assert self.args is not None
+
+        if self.args.target is None:
             if self._default_command:
-                self._args.target = self._default_command
+                self.args.target = self._default_command
             else:
                 self.print_help()
                 return 1
 
-        self._command_map[self._args.target].set_args(self._args)
-        return self._command_map[self._args.target].handle()
+        command = self.get_command(self.args.target)
+        command.set_args(self.args)
+        return self.run_command(command)
 
-    def get_command(self, cmd_name: str) -> Optional[Command]:
-        return self._command_map.get(cmd_name)
+    def run_command(self, command: Command) -> int:
+        # This is here so the user can override how commands are executed
+        return command.handle()
+
+    def get_command(self, cmd_name: str) -> Command:
+        return self._command_map[cmd_name]
+
+    def set_args(self, args: argparse.Namespace) -> None:
+        self._args = args
 
     def set_prolog(self, prolog: str) -> None:
         self._prolog = prolog

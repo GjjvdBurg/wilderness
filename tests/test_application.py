@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import contextlib
-import io
 import unittest
 
 from wilderness import Application
 from wilderness.help import HelpCommand
+from wilderness.tester import Tester
 
 
 class ApplicationTestCase(unittest.TestCase):
@@ -43,46 +42,34 @@ class ApplicationTestCase(unittest.TestCase):
         self.assertEqual(app.format_help(), helptext)
 
         # Test that we get help without any arguments
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
-            status = app.run()
-        self.assertEqual(status, 1)
-        self.assertEqual(buf.getvalue(), helptext)
+        tester = Tester(app)
+        tester.test_application()
+        self.assertEqual(tester.get_return_code(), 1)
+        self.assertEqual(tester.get_stdout(), helptext)
 
         # Test that we get help with only -h flag
-        test_args = ["-h"]
-        buf = io.StringIO()
-        with self.assertRaises(SystemExit):
-            with contextlib.redirect_stdout(buf):
-                status = app.run(args=test_args)
-        self.assertEqual(status, 1)
-        self.assertEqual(buf.getvalue(), helptext)
+        tester = Tester(app)
+        tester.test_application(["-h"])
+        self.assertEqual(tester.get_return_code(), 1)
+        self.assertEqual(tester.get_stdout(), helptext)
 
         # Test that we get help with only --help
-        test_args = ["--help"]
-        buf = io.StringIO()
-        with self.assertRaises(SystemExit):
-            with contextlib.redirect_stdout(buf):
-                status = app.run(args=test_args)
-        self.assertEqual(status, 1)
-        self.assertEqual(buf.getvalue(), helptext)
+        tester = Tester(app)
+        tester.test_application(["--help"])
+        self.assertEqual(tester.get_return_code(), 1)
+        self.assertEqual(tester.get_stdout(), helptext)
 
         # Test that we get help with --help and other arguments
-        test_args = ["-q", "--help"]
-        buf = io.StringIO()
-        with self.assertRaises(SystemExit):
-            with contextlib.redirect_stdout(buf):
-                status = app.run(args=test_args)
-        self.assertEqual(status, 1)
-        self.assertEqual(buf.getvalue(), helptext)
+        tester = Tester(app)
+        tester.test_application(["-q", "--help"])
+        self.assertEqual(tester.get_return_code(), 1)
+        self.assertEqual(tester.get_stdout(), helptext)
 
         # Test that we get help when help command supplied
-        test_args = ["help"]
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
-            status = app.run(args=test_args)
-        self.assertEqual(status, 1)
-        self.assertEqual(buf.getvalue(), helptext)
+        tester = Tester(app)
+        tester.test_application(["help"])
+        self.assertEqual(tester.get_return_code(), 1)
+        self.assertEqual(tester.get_stdout(), helptext)
 
 
 if __name__ == "__main__":

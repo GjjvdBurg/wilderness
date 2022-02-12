@@ -15,7 +15,6 @@ import abc
 import argparse
 
 from typing import TYPE_CHECKING
-from typing import Any
 from typing import Dict
 from typing import Optional
 
@@ -78,9 +77,6 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
 
     def set_args(self, args: argparse.Namespace):
         self._args = args
-
-    def get_argument(self, name: str) -> Any:
-        return getattr(self._args, name)
 
     def register(self):
         pass

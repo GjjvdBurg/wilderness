@@ -227,7 +227,4 @@ class InitCommand(Command):
         )
 
     def handle(self):
-        print(
-            "Running clone command with repository "
-            f"{self.get_argument('directory')}"
-        )
+        print(f"Running clone command with repository {self.args.directory}")

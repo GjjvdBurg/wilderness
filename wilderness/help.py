@@ -49,7 +49,8 @@ class HelpCommand(Command):
         return True
 
     def handle(self) -> int:
-        cmd = self.get_argument("command")
+        assert self.args is not None
+        cmd = self.args.command
         if not self._have_man():
             print("Error: man command not available.", file=sys.stderr)
             return 1
