@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 0.1.3
+
+* Add Tester class to test applications and commands
+* Subclass ArgumentParser to handle exit on error
+* Removed ``application.get_argument`` method
+* Several smaller fixes and design improvements
+
 ## Version 0.1.2
 
 * Redesign manpage building api
