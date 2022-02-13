@@ -72,6 +72,13 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
         self._arg_help[action.dest] = description
         return action
 
+    def add_mutually_exclusive_group(
+        self, *args, **kwargs
+    ) -> argparse._MutuallyExclusiveGroup:
+        assert self._parser is not None
+        group = self._parser.add_mutually_exclusive_group(*args, **kwargs)
+        return group
+
     def set_parser(self, parser: argparse.ArgumentParser):
         self._parser = parser
 

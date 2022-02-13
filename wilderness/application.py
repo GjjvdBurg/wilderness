@@ -135,6 +135,13 @@ class Application(DocumentableMixin):
         self._arg_help[action.dest] = description
         return action
 
+    def add_mutually_exclusive_group(
+        self, *args, **kwargs
+    ) -> argparse._MutuallyExclusiveGroup:
+        assert self._parser is not None
+        group = self._parser.add_mutually_exlusive_group(*args, **kwargs)
+        return group
+
     def add(self, command: Command):
         if self._subparsers is None:
             self._subparsers = self._parser.add_subparsers(
