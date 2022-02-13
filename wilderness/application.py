@@ -140,7 +140,7 @@ class Application(DocumentableMixin):
         self, *args, **kwargs
     ) -> argparse._MutuallyExclusiveGroup:
         assert self._parser is not None
-        group = self._parser.add_mutually_exlusive_group(*args, **kwargs)
+        group = self._parser.add_mutually_exclusive_group(*args, **kwargs)
         return group
 
     def add(self, command: Command):
