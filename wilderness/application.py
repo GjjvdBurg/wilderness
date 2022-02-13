@@ -107,8 +107,9 @@ class Application(DocumentableMixin):
         return self._version
 
     @property
-    def args(self) -> Optional[argparse.Namespace]:
+    def args(self) -> argparse.Namespace:
         """The parsed command line arguments"""
+        assert self._args is not None
         return self._args
 
     @property
