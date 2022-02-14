@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.1.4
+
+* Add support for mutually exclusive argument groups
+* Typos and fixes
+
 ## Version 0.1.3
 
 * Add Tester class to test applications and commands
