@@ -44,9 +44,7 @@ class HelpCommand(Command):
             )
         except FileNotFoundError:
             return False
-        if not cp.returncode == 0:
-            return False
-        return True
+        return cp.returncode == 0
 
     def handle(self) -> int:
         assert self.args is not None
