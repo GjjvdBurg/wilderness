@@ -71,7 +71,7 @@ class Tester:
 
         parser = self.application._parser
         parser.exit_on_error = False
-        parsed_args = parser.parse_args()
+        parsed_args = parser.parse_args(args=args)
         self.application.set_args(parsed_args)
 
         self._io_stdout = io.StringIO()
