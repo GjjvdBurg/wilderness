@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.1.5
+
+* Bugfix for synopsis of commands with mutually exclusive argument groups
+
 ## Version 0.1.4
 
 * Add support for mutually exclusive argument groups
