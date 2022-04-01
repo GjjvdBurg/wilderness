@@ -16,6 +16,8 @@ import re
 import textwrap
 
 from typing import Dict
+from typing import List
+from typing import Optional
 
 
 class HelpFormatter(argparse.HelpFormatter):
@@ -71,13 +73,20 @@ class HelpFormatter(argparse.HelpFormatter):
                         inserts[i] = "|"
 
         # collect all actions format strings
-        parts = []
+        parts = []  # type: List[Optional[str]]
         for i, action in enumerate(actions):
             if isinstance(action, argparse._HelpAction):
-                continue
+                inserts = {i - 1: inserts[i] for i in inserts}
+
+            elif action.help is argparse.SUPPRESS:
+                parts.append(None)
+                if inserts.pop(i) == "|":
+                    inserts.pop(i)
+                elif inserts.get(i + 1) == "|":
+                    inserts.pop(i + 1)
 
             # produce all arg strings
-            if not action.option_strings:
+            elif not action.option_strings:
                 default = self._get_default_metavar_for_positional(action)
                 part = self._format_args(action, default)
 
@@ -133,16 +142,13 @@ class HelpFormatter(argparse.HelpFormatter):
                 part = " | ".join(action.option_strings)
             else:
                 part = action.option_strings[0]
-
-        # TODO: get prefix chars from parser
-        elif option_string.startswith("--"):
+        elif option_string.startswith("--"):  # TODO: get prefix from parser
             default = self._get_default_metavar_for_optional(action)
             args_string = self._format_args(action, default)
             if args_string.startswith("["):
                 part = "%s[=%s" % (option_string, args_string[1:])
             else:
                 part = "%s=%s" % (option_string, args_string)
-
         elif len(action.option_strings) == 2:
             default = self._get_default_metavar_for_optional(action)
             args_string = self._format_args(action, default)
@@ -160,6 +166,5 @@ class HelpFormatter(argparse.HelpFormatter):
         # make it look optional if it's not required or in a group
         if not action.required and action not in group_actions:
             part = "[%s]" % part
-        else:
-            raise NotImplementedError
+
         return part
