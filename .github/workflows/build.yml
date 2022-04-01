@@ -17,7 +17,7 @@ jobs:
         # Can add others if deemed necessary
         os: [ 'ubuntu-latest' ]
         # minimal and latest
-        py: [ '3.6', '3.9' ]
+        py: [ '3.6', '3.10' ]
 
     steps:
       - name: Install Python ${{ matrix.py }}
