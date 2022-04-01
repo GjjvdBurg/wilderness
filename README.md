@@ -5,13 +5,16 @@
 [![Downloads](https://pepy.tech/badge/wilderness)](https://pepy.tech/project/wilderness)
 [![Documentation Status](https://readthedocs.org/projects/wilderness/badge/?version=latest)](https://wilderness.readthedocs.io/en/latest/?badge=latest)
 
+<p align="right"><i>In wildness is the salvation of the world.</i> &mdash; 
+Aldo Leopold</p>
+
 Wilderness is a light wrapper around [argparse][argparse] for creating command 
 line applications with multiple subcommands, in the style of [Git][git]. 
 Wilderness also makes it easy to generate man pages for your application.
 
 Wilderness is heavily inspired by [Cleo][cleo] and 
 [argparse-manpage][argparse-manpage], but aims to stick as closely as possible 
-to [argparse][argparse] to avoid users needing to learn a new API.
+to [argparse][argparse] to avoid users having to learn a new API.
 
 ## Installation
 
@@ -26,7 +29,7 @@ $ pip install wilderness
 Building command line applications with Wilderness is straightforward, but it 
 does expect a certain structure of the application. You can create 
 applications with or without subcommands, as illustrated with the 
-[fakedf][fakedf] and [fakegit][fakegit] examples, respectively.
+[fakegit][fakegit] and [fakedf][fakedf] examples, respectively.
 
 Creating wilderness applications consist of the following steps:
 
