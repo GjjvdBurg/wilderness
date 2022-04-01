@@ -9,6 +9,7 @@ Copyright: 2021, G.J.J. van den Burg
 This file is part of Wilderness.
 """
 
+import sys
 import unittest
 
 from wilderness.formatter import HelpFormatter
@@ -77,8 +78,11 @@ class HelpFormatterTestCase(unittest.TestCase):
         )
         grp.add_argument("-j", "--json", action="store_true", help="json help")
         thehelp = parser.format_help()
+
+        minor = sys.version_info.minor
+        optstr = "options" if minor >= 10 else "optional arguments"
         exp = (
-            "usage: test [-p | --plain | -j | --json]\n\noptions:\n"
+            f"usage: test [-p | --plain | -j | --json]\n\n{optstr}:\n"
             "  -h, --help   show this help message and exit\n"
             "  -p, --plain  plain help\n"
             "  -j, --json   json help\n"
