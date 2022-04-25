@@ -63,7 +63,8 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
 
     def add_argument(self, *args, **kwargs):
         assert self._parser is not None
-        description = kwargs.pop("description", None)
+        help_ = kwargs.get("help", None)
+        description = kwargs.pop("description", help_)
         action = self._parser.add_argument(*args, **kwargs)
         self._arg_help[action.dest] = description
         return action
