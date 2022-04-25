@@ -338,7 +338,7 @@ class Application(DocumentableMixin):
         """
         self._parser.exit_on_error = exit_on_error
         parsed_args = self._parser.parse_args(args=args, namespace=namespace)
-        self.set_args(parsed_args)
+        self.args = parsed_args
         if self._subparsers is None:
             return self.handle()
 
@@ -352,7 +352,7 @@ class Application(DocumentableMixin):
                 return 1
 
         command = self.get_command(self.args.target)
-        command.set_args(self.args)
+        command.args = self.args
         return self.run_command(command)
 
     def run_command(self, command: Command) -> int:
@@ -393,19 +393,6 @@ class Application(DocumentableMixin):
 
         """
         return self._command_map[command_name]
-
-    def set_args(self, args: argparse.Namespace) -> None:
-        """Set the argument namespace
-
-        This method can be used to override the argument namespace directly.
-
-        Parameters
-        ----------
-        args : argparse.Namespace
-            The argparse.Namespace to use
-
-        """
-        self._args = args
 
     def set_prolog(self, prolog: str) -> None:
         """Set the prolog of the command line help text
