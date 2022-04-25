@@ -19,6 +19,7 @@ from typing import List
 from typing import Optional
 from typing import TextIO
 
+from ._argparse import ArgumentParser
 from .command import Command
 from .documentable import DocumentableMixin
 from .formatter import HelpFormatter
@@ -26,7 +27,6 @@ from .group import Group
 from .help import HelpCommand
 from .help import help_action_factory
 from .manpages import ManPage
-from ._argparse import ArgumentParser
 
 
 class Application(DocumentableMixin):
@@ -153,7 +153,8 @@ class Application(DocumentableMixin):
         self._prolog = prolog
         self._epilog = epilog
 
-        default_prefix = "-"  # TODO: allow the user to set this and extract from self._parser
+        # TODO: allow the user to set this and extract from self._parser
+        default_prefix = "-"
         if self._add_help:
             self._parser.add_argument(
                 default_prefix + "h",
