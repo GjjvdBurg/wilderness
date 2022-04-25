@@ -153,7 +153,8 @@ class Application(DocumentableMixin):
         self._prolog = prolog
         self._epilog = epilog
 
-        default_prefix = "-"  # TODO: allow the user to set this and extract from self._parser
+        # TODO: allow the user to set this and extract from self._parser
+        default_prefix = "-"
         if self._add_help:
             self._parser.add_argument(
                 default_prefix + "h",
