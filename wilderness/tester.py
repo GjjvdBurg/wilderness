@@ -69,14 +69,11 @@ class Tester:
         self.clear()
         args = [] if args is None else args
 
-        parser = self.application._parser
-        parser.exit_on_error = False
-        parsed_args = parser.parse_args(args=args)
-        self.application.args = parsed_args
-
         self._io_stdout = io.StringIO()
         self._io_stderr = io.StringIO()
 
         with contextlib.redirect_stdout(self._io_stdout):
             with contextlib.redirect_stderr(self._io_stderr):
-                self._retcode = self.application.run()
+                self._retcode = self.application.run(
+                    args=args, exit_on_error=False
+                )
