@@ -31,7 +31,7 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
         options_epilog: Optional[str] = None,
     ):
         self._description = description  # type: Optional[str]
-        self._args = None # type: Optional[argparse.Namespace]
+        self._args = None  # type: Optional[argparse.Namespace]
         self._parser = None  # type: Optional[argparse.ArgumentParser]
         self._arg_help = {}  # type: Dict[str, Optional[str]]
         self._extra_sections = {} if extra_sections is None else extra_sections

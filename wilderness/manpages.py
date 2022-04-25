@@ -151,7 +151,7 @@ class ManPage:
         starting lines with :literal:`* \ ` , as long as each list entry starts
         on its own line (that is, separated by :code:`\\n`). Indented text can
         be created by prefixing a line with :code:`\\t`. Numbered lists are
-        also recognized, as long as each item starts with :literal:`1. \ ` 
+        also recognized, as long as each item starts with :literal:`1. \ `
         (that is, a digit followed by a period, followed by a space).
 
         Parameters
