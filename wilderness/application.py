@@ -25,7 +25,7 @@ from .group import Group
 from .help import HelpCommand
 from .help import help_action_factory
 from .manpages import ManPage
-from .parser import ArgumentParser
+from ._argparse import ArgumentParser
 
 
 class Application(DocumentableMixin):

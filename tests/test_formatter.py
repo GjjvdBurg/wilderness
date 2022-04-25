@@ -13,7 +13,7 @@ import sys
 import unittest
 
 from wilderness.formatter import HelpFormatter
-from wilderness.parser import ArgumentParser
+from wilderness._argparse import ArgumentParser
 
 
 class HelpFormatterTestCase(unittest.TestCase):
