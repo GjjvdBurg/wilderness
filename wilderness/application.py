@@ -17,6 +17,7 @@ import sys
 from typing import Dict
 from typing import List
 from typing import Optional
+from typing import TextIO
 
 from .command import Command
 from .documentable import DocumentableMixin
@@ -29,6 +30,80 @@ from ._argparse import ArgumentParser
 
 
 class Application(DocumentableMixin):
+    """Base class for applications
+
+    This is the main Application object that Wilderness applications are
+    expected to inherit from. All text that is supplied to the man pages, such
+    as the description, can use basic formatting constructs documented in the
+    :obj:`ManPage.groffify() <wilderness.manpages.ManPage.groffify>` method.
+
+    Parameters
+    ----------
+    name : str
+        The name of the application.
+
+    version : str
+        The version of the application, to be used in creating the man pages.
+
+    author : Optional[str]
+        The author(s) of the application. This is used in the man pages, but is
+        not actually visible in the output (it is recorded in the metadata
+        header of the man pages).
+
+    title : Optional[str]
+        The title of the application is used as a short description. It shows
+        up in the man pages as the text after the application name in the first
+        section.
+
+    description : Optional[str]
+        Long description of the application. This is used in the man pages in
+        the DESCRIPTION section after the synopsis.
+
+    default_command : Optional[str]
+        The default command to run when none is supplied on the command line.
+        By default this is omitted and the help text is shown instead, but some
+        applications may want to run a particular command as default instead.
+
+    add_help : bool
+        Whether to add help commands or not. This adds support for the
+        traditional help flags ``-h`` or ``--help`` for the short help text on
+        the command line, as well as the ``help`` command that opens the man
+        pages for the subcommands of the application. Note that the short help
+        text on the command line typically provides a list of available
+        commands.
+
+        See the `FakeDF`_ example for an application where this is not
+        enabled.
+
+    extra_sections : Optional[Dict[str, str]]
+        Additional sections of documentation for the man page. This is expected
+        to be provided as a dictionary where the keys are the section headers
+        and the values are the section text. Basic formatting constructs such
+        as lists and enumerations are understood by the text processor (see
+        :obj:`ManPage.groffify() <wilderness.manpages.ManPage.groffify>` for 
+        further details).
+
+    prolog : Optional[str]
+        Text to be shown in the short command line help text, before the
+        (grouped) list of available commands. Newline characters are preserved.
+
+    epilog: Optional[str]
+        Text to be shown in the short command line help text, after the list of
+        available commands. Newline characters are preserved.
+
+    options_prolog: Optional[str]
+        Text to be shown in the man page before the list of options. See the
+        `FakeDF`_ application for an example.
+
+    options_epilog: Optional[str]
+        Text to be shown in the man page after the list of options. See the
+        `FakeDF`_ application for an example.
+
+
+    .. _FakeDF:
+        https://github.com/GjjvdBurg/wilderness/tree/master/examples/fakedf
+
+    """
 
     _cmd_name = "command"
 
@@ -108,7 +183,14 @@ class Application(DocumentableMixin):
 
     @property
     def commands(self) -> List[Command]:
-        """List the commands registered to the application"""
+        """List the commands registered to the application
+
+        Returns
+        -------
+        commands : List[:class:`command.Command`]
+            The list of commands registered to the application.
+
+        """
         cmds = []
         if self._root_group:
             cmds.extend(list(self._root_group.commands))
@@ -133,11 +215,28 @@ class Application(DocumentableMixin):
     def add_mutually_exclusive_group(
         self, *args, **kwargs
     ) -> argparse._MutuallyExclusiveGroup:
+        """Add a mutually exclusive group
+
+        This wraps the `add_mutually_exclusive_group`_ from the argparse
+        module, and uses the same positional and keyword arguments.
+
+        .. _add_mutually_exclusive_group:
+            https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
+
+        """
         assert self._parser is not None
         group = self._parser.add_mutually_exclusive_group(*args, **kwargs)
         return group
 
     def add(self, command: Command):
+        """Add a command to the application
+
+        Parameters
+        ----------
+        command : :class:`.command.Command`
+            The command to add to the application.
+
+        """
         if self._subparsers is None:
             self._subparsers = self._parser.add_subparsers(
                 dest="target", metavar=self._cmd_name
@@ -160,23 +259,83 @@ class Application(DocumentableMixin):
         command._application = self
 
     def add_group(self, title: str) -> Group:
+        """Create a group of commands
+
+        Parameters
+        ----------
+        title : str
+            The title for the group.
+
+        Returns
+        -------
+        :class:`.group.Group`
+            The created command group.
+
+        """
         group = Group(title)
         group.set_app(self)
         self._group_map[title] = group
         return group
 
     def register(self):
+        """Register arguments to the application
+
+        Use this method when adding command line arguments to the application.
+        For single-command applications, this should be used to add all command
+        line arguments. For multi-command applications, this method can be used
+        to add arguments that apply to all commands, or arguments such as
+        --version.
+
+        This method is called upon initialization of the Application object.
+
+        """
         pass
 
     def handle(self) -> int:
+        """Main method to override for single-command applications.
+
+        When creating a single-command application (such as the `FakeDF`_
+        example), this method must be overridden with the actual functionality.
+        For multi-command applications, this method is not used.
+
+        Returns
+        -------
+        return_code : int
+            The return code of the application, to be used as the return code
+            on the command line.
+
+        """
         return 1
 
     def run(
         self,
         args: Optional[List[str]] = None,
         namespace: Optional[argparse.Namespace] = None,
-        exit_on_error: Optional[bool] = True,
+        exit_on_error: bool = True,
     ) -> int:
+        """Main method to run the application
+
+        Parameters
+        ----------
+        args : Optional[List[str]]
+            List of arguments to the application. This is typically only used
+            for testing, as by default the arguments will be read from the
+            command line.
+
+        namespace : Optional[argparse.Namespace]
+            Namespace object to save the arguments to. By default a new
+            argparse.Namespace object is created.
+
+        exit_on_error : bool
+            Whether or not to exit when argparse encounters an error.
+
+        Returns
+        -------
+        return_code : int
+            The return code of the application, to be used as the return code
+            at the command line.
+
+        """
         self._parser.exit_on_error = exit_on_error
         parsed_args = self._parser.parse_args(args=args, namespace=namespace)
         self.set_args(parsed_args)
@@ -197,22 +356,90 @@ class Application(DocumentableMixin):
         return self.run_command(command)
 
     def run_command(self, command: Command) -> int:
+        """Run a particular command directy
+
+        Parameters
+        ----------
+        command : :class:`.command.Command`
+            The command to execute
+
+        Returns
+        -------
+        return_code : int
+            The return code of the handle() method of the command.
+
+        """
         # This is here so the user can override how commands are executed
         return command.handle()
 
-    def get_command(self, cmd_name: str) -> Command:
-        return self._command_map[cmd_name]
+    def get_command(self, command_name: str) -> Command:
+        """Get a command by name
+
+        Parameters
+        ----------
+        command_name : str
+            The name of the command to find
+
+        Returns
+        -------
+        command : :class:`.command.Command`
+            The instance of the Command to be returned.
+
+        Raises
+        ------
+        KeyError
+            If no command with the provided name can be found, a KeyError is
+            raised.
+
+        """
+        return self._command_map[command_name]
 
     def set_args(self, args: argparse.Namespace) -> None:
+        """Set the argument namespace
+
+        This method can be used to override the argument namespace directly.
+
+        Parameters
+        ----------
+        args : argparse.Namespace
+            The argparse.Namespace to use
+
+        """
         self._args = args
 
     def set_prolog(self, prolog: str) -> None:
+        """Set the prolog of the command line help text
+
+        Parameters
+        ----------
+        prolog : str
+            Text to include before the list of commands in the command line
+            help text. The prolog is printed after the synopsis of the
+            application.
+
+        """
         self._prolog = prolog
 
     def set_epilog(self, epilog: str) -> None:
+        """Set the epilog of the command line help text
+
+        Parameters
+        ----------
+        epilog : str
+            Text to include at the end of the command line help text.
+
+        """
         self._epilog = epilog
 
     def create_manpage(self) -> ManPage:
+        """Create the manpage for the application
+
+        Returns
+        -------
+        man_page : ManPage
+            The generated ManPage object.
+
+        """
         man = ManPage(
             self.name,
             version=self._version,
@@ -223,6 +450,19 @@ class Application(DocumentableMixin):
         return man
 
     def format_help(self) -> str:
+        """Format the command line help for the application
+
+        This method creates the help text for the command line, which is
+        typically printed when the -h / --help / help command line arguments
+        are used. The :func:`print_help` method calls this method to format
+        the help text.
+
+        Returns
+        -------
+        help_text : str
+            The help text as a single string.
+
+        """
         formatter = argparse.RawTextHelpFormatter(prog=self._parser.prog)
 
         # usage
@@ -260,7 +500,16 @@ class Application(DocumentableMixin):
         # determine help from format above
         return formatter.format_help()
 
-    def print_help(self, file=None):
+    def print_help(self, file: TextIO = None):
+        """Print the command line help text for the application
+
+        Parameters
+        ----------
+        file : Optional[TextIO]
+            The file to which to write the help text. If omitted, the help text
+            will be written to sys.stdout.
+
+        """
         if file is None:
             file = sys.stdout
         message = self.format_help()

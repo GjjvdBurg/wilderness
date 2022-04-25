@@ -144,6 +144,28 @@ class ManPage:
         self._page.extend(section)
 
     def groffify(self, text: str) -> str:
+        """Format a text line for use in manpages
+
+        This function supports several basic formatting constructs. First,
+        newlines in the text are preserved. Next, lists can be created by
+        starting lines with :literal:`* \ ` , as long as each list entry starts
+        on its own line (that is, separated by :code:`\\n`). Indented text can
+        be created by prefixing a line with :code:`\\t`. Numbered lists are
+        also recognized, as long as each item starts with :literal:`1. \ ` 
+        (that is, a digit followed by a period, followed by a space).
+
+        Parameters
+        ----------
+        text : str
+            The text to convert
+
+        Returns
+        -------
+        formatted_text : str
+            The formatted text ready for use in manpage documents.
+
+        """
+
         output = []
 
         lines = text.split("\n")
@@ -158,24 +180,24 @@ class ManPage:
                 output.append(".sp -1")
                 output.append(".IP \\(bu 2.3")
                 output.append(".\\}")
-                output.append(self.groffiy_line(line[2:]))
+                output.append(self.groffify_line(line[2:]))
                 output.append(".RE")
             elif line.startswith("\t"):
                 output.append(".RS 4")
-                output.append(self.groffiy_line(line[1:]))
+                output.append(self.groffify_line(line[1:]))
                 output.append(".RE")
             elif match:
                 label = line[match.start() : match.end()]
                 rest = line[match.end() :]
-                output.append(f"\\fB{label}\\fR{self.groffiy_line(rest)}")
+                output.append(f"\\fB{label}\\fR{self.groffify_line(rest)}")
                 output.append(".br")
             elif line in ["", "\n"]:
                 output.append(".sp")
             else:
-                output.append(self.groffiy_line(line))
+                output.append(self.groffify_line(line))
         return "\n".join(output)
 
-    def groffiy_line(self, line: str) -> str:
+    def groffify_line(self, line: str) -> str:
         line = line.replace("\\", "\\e")
         line = line.replace("-", "\\-")
         line = line.replace("...", "\\&...")
