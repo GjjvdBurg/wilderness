@@ -31,8 +31,9 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
         options_epilog: Optional[str] = None,
     ):
         self._description = description  # type: Optional[str]
+        self._args = None # type: Optional[argparse.Namespace]
         self._parser = None  # type: Optional[argparse.ArgumentParser]
-        self._arg_help = {}  # type: Dict[str, str]
+        self._arg_help = {}  # type: Dict[str, Optional[str]]
         self._extra_sections = {} if extra_sections is None else extra_sections
         self._options_extra = {
             "prolog": options_prolog or "",
@@ -47,6 +48,24 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
     def parser(self) -> argparse.ArgumentParser:
         assert self._parser is not None
         return self._parser
+
+    @parser.setter
+    def parser(self, parser: argparse.ArgumentParser):
+        self._parser = parser
+
+    @property
+    def args(self) -> argparse.Namespace:
+        """The parsed command line arguments"""
+        assert self._args is not None
+        return self._args
+
+    @args.setter
+    def args(self, args: argparse.Namespace):
+        self._args = args
+
+    @property
+    def argument_help(self) -> Dict[str, Optional[str]]:
+        return self._arg_help
 
     def get_synopsis(self, width: int = 80) -> str:
         optionals = []

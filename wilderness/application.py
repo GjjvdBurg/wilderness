@@ -107,12 +107,6 @@ class Application(DocumentableMixin):
         return self._version
 
     @property
-    def args(self) -> argparse.Namespace:
-        """The parsed command line arguments"""
-        assert self._args is not None
-        return self._args
-
-    @property
     def commands(self) -> List[Command]:
         """List the commands registered to the application"""
         cmds = []
@@ -161,7 +155,7 @@ class Application(DocumentableMixin):
             help=command.title,
             add_help=command._add_help,
         )
-        command.set_parser(cmd_parser)
+        command.parser = cmd_parser
         command.register()
         command._application = self
 

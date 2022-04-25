@@ -54,11 +54,6 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
         return self._application
 
     @property
-    def args(self) -> argparse.Namespace:
-        assert self._args is not None
-        return self._args
-
-    @property
     def name(self) -> str:
         return self._name
 
