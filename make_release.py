@@ -192,7 +192,11 @@ class RemoveVenv(Step):
 
 class GitTagVersion(Step):
     def action(self, context):
-        self.print_and_execute(f"git tag v{context['version']}")
+        self.print_and_execute(
+            f"git tag -s "
+            f"-m \"Wilderness Release v{context['version']}\" "
+            f"v{context['version']}"
+        )
 
 
 class GitAdd(Step):
