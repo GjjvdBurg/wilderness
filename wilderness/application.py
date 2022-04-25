@@ -19,6 +19,7 @@ from typing import List
 from typing import Optional
 from typing import TextIO
 
+from ._argparse import ArgumentParser
 from .command import Command
 from .documentable import DocumentableMixin
 from .formatter import HelpFormatter
@@ -26,7 +27,6 @@ from .group import Group
 from .help import HelpCommand
 from .help import help_action_factory
 from .manpages import ManPage
-from ._argparse import ArgumentParser
 
 
 class Application(DocumentableMixin):
@@ -336,14 +336,26 @@ class Application(DocumentableMixin):
             at the command line.
 
         """
+        # Parse the command line arguments as given
         self._parser.exit_on_error = exit_on_error
         parsed_args = self._parser.parse_args(args=args, namespace=namespace)
+
+        # If a parser error caused argparse to print the help, then we stop
+        # here
+        if self._parser._exit_called:
+            return 1
+
+        # If there are no subparsers registered, we have an application without
+        # subcommands, so the application handles things
         self.args = parsed_args
         if self._subparsers is None:
             return self.handle()
 
+        # Satisfy mypy
         assert self.args is not None
 
+        # If we have no target, check if we have a default and set that as the
+        # target. If we don't print help and exit.
         if self.args.target is None:
             if self._default_command:
                 self.args.target = self._default_command
@@ -351,6 +363,7 @@ class Application(DocumentableMixin):
                 self.print_help()
                 return 1
 
+        # Run the requested command
         command = self.get_command(self.args.target)
         command.args = self.args
         return self.run_command(command)
