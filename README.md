@@ -50,6 +50,7 @@ Here are some examples that use Wilderness to build command line applications:
 | [fakegit][fakegit] | A multi-level command line application similar to Git |
 | [fakedf][fakedf] | An application without subcommands similar to df |
 | [CleverCSV][CleverCSV] | CleverCSV is a package for handling messy CSV files |
+| [Veld][Veld] | Easy command line analytics |
 
 > Add your example here by opening a pull request!
 
@@ -67,3 +68,4 @@ Author: [Gertjan van den Burg][gertjan]
 [gertjan]: https://gertjanvandenburg.com
 [git]: https://git-scm.com/
 [CleverCSV]: https://github.com/alan-turing-institute/CleverCSV
+[Veld]: https://github.com/GjjvdBurg/Veld/
