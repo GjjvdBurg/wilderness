@@ -80,7 +80,7 @@ class Application(DocumentableMixin):
         to be provided as a dictionary where the keys are the section headers
         and the values are the section text. Basic formatting constructs such
         as lists and enumerations are understood by the text processor (see
-        :obj:`ManPage.groffify() <wilderness.manpages.ManPage.groffify>` for 
+        :obj:`ManPage.groffify() <wilderness.manpages.ManPage.groffify>` for
         further details).
 
     prolog : Optional[str]
