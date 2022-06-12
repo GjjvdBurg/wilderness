@@ -99,14 +99,35 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
         return text
 
     def get_options_text(self) -> str:
-        text = [self._options_extra["prolog"]]
+        prolog = self._options_extra["prolog"]
+        if not isinstance(prolog, str):
+            raise ValueError(
+                f"Options prolog not of type str (received: {prolog})"
+            )
+        epilog = self._options_extra["epilog"]
+        if not isinstance(epilog, str):
+            raise ValueError(
+                f"Options epilog not of type str (received: {epilog})"
+            )
+
+        text = [prolog]
         text.append("")
         for action in self.parser._get_optional_actions():
             desc = self._arg_help.get(action.dest)
+            desc_source = "description"
             if desc is None:
                 desc = action.help
+                desc_source = "help"
+
             if desc is argparse.SUPPRESS or desc is None:
                 continue
+
+            if not isinstance(desc, str):
+                raise ValueError(
+                    f"Description for action {action.dest} found in "
+                    f"{desc_source} attribute is not of type str "
+                    f"(received type: {type(desc)})."
+                )
 
             # TODO clean this up
             if action.metavar is None:
@@ -143,10 +164,20 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
 
         for action in self.parser._get_positional_actions():
             desc = self._arg_help.get(action.dest)
+            desc_source = "description"
             if desc is None:
                 desc = action.help
+                desc_source = "help"
+
             if desc is argparse.SUPPRESS or desc is None:
                 continue
+
+            if not isinstance(desc, str):
+                raise ValueError(
+                    f"Description for action {action.dest} found in "
+                    f"{desc_source} attribute is not of type str "
+                    f"(received type: {type(desc)})."
+                )
 
             if action.nargs == "?":
                 text.append(f"[{action.dest}]")
@@ -157,7 +188,7 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
             text.append(".RE")
             text.append(".PP")
 
-        text.append(self._options_extra["epilog"])
+        text.append(epilog)
         return "\n".join(text)
 
     def populate_manpage(self, man: ManPage) -> None:
