@@ -150,9 +150,10 @@ class ManPage:
         newlines in the text are preserved. Next, lists can be created by
         starting lines with :literal:`* \ ` , as long as each list entry starts
         on its own line (that is, separated by :code:`\\n`). Indented text can
-        be created by prefixing a line with :code:`\\t`. Numbered lists are
-        also recognized, as long as each item starts with :literal:`1. \ `
-        (that is, a digit followed by a period, followed by a space).
+        be created by prefixing a line with one or more :code:`\\t` characters.
+        Numbered lists are also recognized, as long as each item starts with
+        :literal:`1. \ ` (that is, a digit followed by a period, followed by a
+        space).
 
         Parameters
         ----------
@@ -183,8 +184,12 @@ class ManPage:
                 output.append(self.groffify_line(line[2:]))
                 output.append(".RE")
             elif line.startswith("\t"):
-                output.append(".RS 4")
-                output.append(self.groffify_line(line[1:]))
+                c = 0
+                while line.startswith("\t"):
+                    line = line[1:]
+                    c += 1
+                output.append(f".RS {4 * c}")
+                output.append(self.groffify_line(line))
                 output.append(".RE")
             elif match:
                 label = line[match.start() : match.end()]
