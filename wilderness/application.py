@@ -199,6 +199,26 @@ class Application(DocumentableMixin):
             cmds.extend(list(group.commands))
         return cmds
 
+    @property
+    def groups(self) -> List[Group]:
+        """List the groups registered to the application
+
+        If no groups have been added to the application but commands have been
+        added, this property will contain a single group, the root group.
+
+        Returns
+        -------
+        groups: List[:class:`group.Group`]
+            The list of groups registered to the application
+
+        """
+        groups = []
+        if self._root_group is not None:
+            groups.append(self._root_group)
+        for group in self._group_map.values():
+            groups.append(group)
+        return groups
+
     def add_argument(self, *args, **kwargs) -> argparse.Action:
         """Add an argument to the application
 
