@@ -263,7 +263,7 @@ class Application(DocumentableMixin):
                 dest="target", metavar=self._cmd_name
             )
         if self._root_group is None:
-            self._root_group = Group(title="Available commands")
+            self._root_group = Group(title="Available commands", is_root=True)
             self._root_group.set_app(self)
         self._root_group.add(command)
 

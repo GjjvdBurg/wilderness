@@ -26,8 +26,9 @@ if TYPE_CHECKING:
 
 
 class Group:
-    def __init__(self, title: Optional[str] = None):
+    def __init__(self, title: Optional[str] = None, is_root: bool = False):
         self._title = title
+        self._is_root = is_root
 
         self._command_map = {}  # type: Dict[str, Command]
         self._app = None  # type: Optional[Application]
@@ -43,6 +44,11 @@ class Group:
     @property
     def commands(self) -> List["Command"]:
         return list(self._command_map.values())
+
+    @property
+    def is_root(self) -> bool:
+        """Return whether the groups is its Application's root group"""
+        return self._is_root
 
     def commands_as_actions(self) -> List[argparse.Action]:
         actions = []
