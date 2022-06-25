@@ -129,7 +129,7 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
                     f"(received type: {type(desc)})."
                 )
 
-            # TODO clean this up
+            # TODO clean this up and make it testable
             if action.metavar is None:
                 opts = ", ".join(action.option_strings)
             else:

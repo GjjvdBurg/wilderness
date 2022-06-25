@@ -57,6 +57,10 @@ test_direct: ## Run unit tests directly (without virtualenv)
 mypy: venv ## Run mypy
 	source $(VENV_DIR)/bin/activate && mypy --check-untyped-defs $(PACKAGE)
 
+cover: venv ## Create test coverage report
+	source $(VENV_DIR)/bin/activate && \
+		green -a -r -s 1 -vv ./tests
+
 #################
 # Documentation #
 #################
