@@ -258,6 +258,9 @@ class Application(DocumentableMixin):
     def add(self, command: Command):
         """Add a command to the application
 
+        Note that the ``register`` method of the command is called when it is
+        added to the application.
+
         Parameters
         ----------
         command : :class:`.command.Command`
@@ -307,11 +310,11 @@ class Application(DocumentableMixin):
     def register(self):
         """Register arguments to the application
 
-        Use this method when adding command line arguments to the application.
-        For single-command applications, this should be used to add all command
-        line arguments. For multi-command applications, this method can be used
-        to add arguments that apply to all commands, or arguments such as
-        --version.
+        Override this method to add command line arguments to the application
+        (using self.add_argument, etc). For single-command applications, this
+        should be used to add all command line arguments. For multi-command
+        applications, this method can be used to add arguments that apply to
+        all commands, or arguments such as --version.
 
         This method is called upon initialization of the Application object.
 
