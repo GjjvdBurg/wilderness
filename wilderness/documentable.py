@@ -191,10 +191,6 @@ class DocumentableMixin(metaclass=abc.ABCMeta):
         text.append(epilog)
         return "\n".join(text)
 
-    def populate_manpage(self, man: ManPage) -> None:
-        man.add_section_synopsis(self.get_synopsis())
-        if self.description:
-            man.add_section("description", self.description)
-        man.add_section("options", self.get_options_text())
-        for sec in self._extra_sections:
-            man.add_section(sec, self._extra_sections[sec])
+    @abc.abstractmethod
+    def create_manpage(self) -> ManPage:
+        pass

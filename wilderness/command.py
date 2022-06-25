@@ -103,5 +103,10 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
             title=self._title,
             author=self.application.author,
         )
-        self.populate_manpage(man)
+        man.add_section_synopsis(self.get_synopsis())
+        if self.description:
+            man.add_section("description", self.description)
+        man.add_section("options", self.get_options_text())
+        for sec in self._extra_sections:
+            man.add_section(sec, self._extra_sections[sec])
         return man

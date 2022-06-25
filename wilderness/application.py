@@ -99,6 +99,9 @@ class Application(DocumentableMixin):
         Text to be shown in the man page after the list of options. See the
         `FakeDF`_ application for an example.
 
+    add_commands_section: bool
+        Whether to automatically generate a section in the application man page
+        that lists the available commands.
 
     .. _FakeDF:
         https://github.com/GjjvdBurg/wilderness/tree/master/examples/fakedf
@@ -121,6 +124,7 @@ class Application(DocumentableMixin):
         epilog: Optional[str] = None,
         options_prolog: Optional[str] = None,
         options_epilog: Optional[str] = None,
+        add_commands_section: bool = False,
     ):
         super().__init__(
             description=description,
@@ -152,6 +156,8 @@ class Application(DocumentableMixin):
 
         self._prolog = prolog
         self._epilog = epilog
+
+        self._add_commands_section = add_commands_section
 
         # TODO: allow the user to set this and extract from self._parser
         default_prefix = "-"
@@ -452,8 +458,16 @@ class Application(DocumentableMixin):
         """
         self._epilog = epilog
 
+    def get_commands_text(self) -> str:
+        text = []
+        for cmd in self.commands:
+            text.append(f"{self.name}-{cmd.name}(1)")
+            text.append(f"\t{cmd.title or ''}")
+            text.append("")
+        return "\n".join(text)
+
     def create_manpage(self) -> ManPage:
-        """Create the manpage for the application
+        """Create the Manpage for the application
 
         Returns
         -------
@@ -467,7 +481,14 @@ class Application(DocumentableMixin):
             title=self._title,
             author=self._author,
         )
-        self.populate_manpage(man)
+        man.add_section_synopsis(self.get_synopsis())
+        if self.description:
+            man.add_section("description", self.description)
+        man.add_section("options", self.get_options_text())
+        if self._add_commands_section:
+            man.add_section("commands", self.get_commands_text())
+        for sec in self._extra_sections:
+            man.add_section(sec, self._extra_sections[sec])
         return man
 
     def format_help(self) -> str:
