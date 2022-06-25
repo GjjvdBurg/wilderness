@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 0.1.7
+
+* Add option to automatically generate list of commands in Application manpage
+* Fix support for tab indentation in man pages
+* Add helpful errors when description is not of type str
+* Some minor fixes
+
 ## Version 0.1.6
 
 * Bugfix for application testing
