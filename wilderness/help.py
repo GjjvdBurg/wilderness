@@ -34,22 +34,10 @@ class HelpCommand(Command):
             description="Display help information",
         )
 
-    def _have_man(self) -> bool:
-        try:
-            cp = subprocess.run(
-                ["man", "--version"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-                check=False,
-            )
-        except FileNotFoundError:
-            return False
-        return cp.returncode == 0
-
     def handle(self) -> int:
         assert self.args is not None
         cmd = self.args.command
-        if not self._have_man():
+        if not have_man_command():
             print("Error: man command not available.", file=sys.stderr)
             return 1
 
@@ -98,3 +86,16 @@ def help_action_factory(app: "Application"):
             parser.exit()
 
     return HelpAction
+
+
+def have_man_command() -> bool:
+    try:
+        cp = subprocess.run(
+            ["man", "--version"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+    except FileNotFoundError:
+        return False
+    return cp.returncode == 0

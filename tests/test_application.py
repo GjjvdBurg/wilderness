@@ -4,6 +4,7 @@ import unittest
 
 from wilderness import Application
 from wilderness.help import HelpCommand
+from wilderness.help import have_man_command
 from wilderness.tester import Tester
 
 
@@ -73,6 +74,7 @@ class ApplicationTestCase(unittest.TestCase):
         self.assertEqual(tester.get_return_code(), 1)
         self.assertEqual(tester.get_stdout(), self._helptext)
 
+    @unittest.skipUnless(have_man_command(), "no man command")
     def test_application_help_6(self):
         # Test that we get help when help command supplied
         tester = Tester(self._app)
