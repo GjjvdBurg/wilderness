@@ -36,18 +36,19 @@ class HelpCommand(Command):
 
     def handle(self) -> int:
         assert self.args is not None
-        cmd = self.args.command
-        if not have_man_command():
-            print("Error: man command not available.", file=sys.stderr)
-            return 1
-
         assert self.application
-        app_name = self.application.name
+
+        cmd = self.args.command
         if cmd is None:
             self.application.print_help()
             return 1
-        else:
-            cp = subprocess.run(["man", f"{app_name}-{cmd}"])
+
+        if not have_man_command():
+            print("Error: man command not available.", file=sys.stderr)
+            return 2
+
+        app_name = self.application.name
+        cp = subprocess.run(["man", f"{app_name}-{cmd}"])
         return cp.returncode
 
     def register(self):
