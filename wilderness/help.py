@@ -34,32 +34,21 @@ class HelpCommand(Command):
             description="Display help information",
         )
 
-    def _have_man(self) -> bool:
-        try:
-            cp = subprocess.run(
-                ["man", "--version"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-                check=False,
-            )
-        except FileNotFoundError:
-            return False
-        return cp.returncode == 0
-
     def handle(self) -> int:
         assert self.args is not None
-        cmd = self.args.command
-        if not self._have_man():
-            print("Error: man command not available.", file=sys.stderr)
-            return 1
-
         assert self.application
-        app_name = self.application.name
+
+        cmd = self.args.command
         if cmd is None:
             self.application.print_help()
             return 1
-        else:
-            cp = subprocess.run(["man", f"{app_name}-{cmd}"])
+
+        if not have_man_command():
+            print("Error: man command not available.", file=sys.stderr)
+            return 2
+
+        app_name = self.application.name
+        cp = subprocess.run(["man", f"{app_name}-{cmd}"])
         return cp.returncode
 
     def register(self):
@@ -98,3 +87,16 @@ def help_action_factory(app: "Application"):
             parser.exit()
 
     return HelpAction
+
+
+def have_man_command() -> bool:
+    try:
+        cp = subprocess.run(
+            ["man", "--version"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+    except FileNotFoundError:
+        return False
+    return cp.returncode == 0

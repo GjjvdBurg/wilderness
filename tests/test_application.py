@@ -3,7 +3,9 @@
 import unittest
 
 from wilderness import Application
+from wilderness import Command
 from wilderness.help import HelpCommand
+from wilderness.help import have_man_command
 from wilderness.tester import Tester
 
 
@@ -28,10 +30,27 @@ class TestApp(Application):
         )
 
 
+class FooCommand(Command):
+    def __init__(self):
+        super().__init__(
+            "foo",
+            title="the foo command",
+            description="Description of the foo command",
+        )
+
+    def handle(self) -> int:
+        return 0
+
+
 class ApplicationTestCase(unittest.TestCase):
+    maxDiff = None
+
     def setUp(self):
         self._app = TestApp()
         self._helptext = "usage: testapp [-h] [-q] command ...\n"
+
+    def tearDown(self):
+        self._app = None
 
     def test_application_base(self):
         app = self._app
@@ -79,6 +98,25 @@ class ApplicationTestCase(unittest.TestCase):
         tester.test_application(["help"])
         self.assertEqual(tester.get_return_code(), 1)
         self.assertEqual(tester.get_stdout(), self._helptext)
+
+    @unittest.skipUnless(have_man_command(), "no man command")
+    def test_application_help_7(self):
+        app = self._app
+        app.add(FooCommand())
+        tester = Tester(self._app)
+        tester.test_application(["help"])
+        self.assertEqual(tester.get_return_code(), 1)
+
+        helptext = "\n".join(
+            [
+                self._helptext,
+                "Available commands:",
+                "  help  Display help information",
+                "  foo   the foo command",
+                "",
+            ]
+        )
+        self.assertEqual(tester.get_stdout(), helptext)
 
 
 if __name__ == "__main__":
