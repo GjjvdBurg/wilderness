@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.1.8
+
+* Fix for running unit tests without man-db (GH-5)
+
 ## Version 0.1.7
 
 * Add option to automatically generate list of commands in Application manpage
