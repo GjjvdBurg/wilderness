@@ -1,5 +1,9 @@
-recursive-include tests
-recursive-include docs
-recursive-include examples
+recursive-include tests *.py
 include LICENSE
 include Makefile
+include docs/conf.py
+include docs/make.bat
+include docs/Makefile
+recursive-include docs *.rst
+recursive-include examples *.py *.md
+prune examples/*/build/*
