@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.1.9
+
+* Add MANIFEST.in file to package for more complete packaging (thanks to 
+  @martin-kokos)
+
 ## Version 0.1.8
 
 * Fix for running unit tests without man-db (GH-5)
