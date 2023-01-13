@@ -33,7 +33,7 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
         name: str,
         title: Optional[str] = None,
         description: Optional[str] = None,
-        add_help: Optional[bool] = True,
+        add_help: bool = True,
         extra_sections: Optional[Dict[str, str]] = None,
         options_prolog: Optional[str] = None,
         options_epilog: Optional[str] = None,

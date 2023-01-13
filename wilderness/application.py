@@ -545,7 +545,7 @@ class Application(DocumentableMixin):
         # determine help from format above
         return formatter.format_help()
 
-    def print_help(self, file: TextIO = None):
+    def print_help(self, file: Optional[TextIO] = None):
         """Print the command line help text for the application
 
         Parameters
