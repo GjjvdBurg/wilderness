@@ -240,24 +240,6 @@ class Application(DocumentableMixin):
         self._arg_help[action.dest] = description
         return action
 
-    def add_mutually_exclusive_group(
-        self, *args, **kwargs
-    ) -> MutuallyExclusiveGroupWrapper:
-        """Add a mutually exclusive group
-
-        This wraps the `add_mutually_exclusive_group`_ from the argparse
-        module, and uses the same positional and keyword arguments.
-
-        .. _add_mutually_exclusive_group:
-            https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
-
-        """
-        assert self._parser is not None
-        _meg = self._parser.add_mutually_exclusive_group(*args, **kwargs)
-        meg = MutuallyExclusiveGroupWrapper(_meg)
-        meg.command = self
-        return meg
-
     def add(self, command: Command):
         """Add a command to the application
 
