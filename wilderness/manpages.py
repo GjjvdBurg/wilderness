@@ -31,7 +31,6 @@ class ManPage:
         title: Optional[str] = None,
         version: Optional[str] = "",
     ):
-
         self._application_name = application_name
         self._command_name = command_name
         self._version = version

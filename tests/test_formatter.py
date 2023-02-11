@@ -17,7 +17,6 @@ from wilderness.formatter import HelpFormatter
 
 
 class HelpFormatterTestCase(unittest.TestCase):
-
     maxDiff = None
 
     def test__fill_text_1(self):

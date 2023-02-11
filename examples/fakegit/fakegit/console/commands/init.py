@@ -6,7 +6,6 @@ from wilderness.command import Command
 
 
 class InitCommand(Command):
-
     _description = (
         "This command creates an empty Git repository - basically a .git "
         "directory with subdirectories for objects, refs/heads, refs/tags, "
