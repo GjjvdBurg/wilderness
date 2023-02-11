@@ -3,9 +3,10 @@
 # Uses self-documenting macros from here:
 # http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 
-PACKAGE=wilderness
-DOC_DIR=./docs/
-VENV_DIR=/tmp/wilderness_venv/
+PACKAGE  = wilderness
+DOC_DIR  = ./docs/
+VENV_DIR = /tmp/wilderness_venv/
+PYTHON   = python
 
 .PHONY: help dist venv
 
@@ -23,7 +24,7 @@ help:
 .PHONY: install
 
 install: ## Install for the current user using the default python command
-	python setup.py build_ext --inplace && \
+	$(PYTHON) setup.py build_ext --inplace && \
 		python setup.py install --user
 
 ################
@@ -33,10 +34,10 @@ install: ## Install for the current user using the default python command
 .PHONY: release dist
 
 release: ## Make a release
-	python make_release.py
+	$(PYTHON) make_release.py
 
 dist: ## Make Python source distribution
-	python setup.py sdist && python setup.py bdist_wheel
+	$(PYTHON) setup.py sdist && $(PYTHON) setup.py bdist_wheel
 
 ###########
 # Testing #
@@ -50,8 +51,8 @@ test: venv ## Run unit tests in virtual environment
 		mypy --check-untyped-defs $(PACKAGE)
 
 test_direct: ## Run unit tests directly (without virtualenv)
-	pip install .[tests] && \
-		python -m unittest discover && \
+	$(PYTHON) -m pip install .[tests] && \
+		$(PYTHON) -m unittest discover && \
 		mypy --check-untyped-defs $(PACKAGE)
 
 mypy: venv ## Run mypy
@@ -93,8 +94,8 @@ clean-docs:
 venv: $(VENV_DIR)/bin/activate
 
 $(VENV_DIR)/bin/activate:
-	test -d $(VENV_DIR) || python -m venv $(VENV_DIR)
-	source $(VENV_DIR)/bin/activate && pip install -e .[dev]
+	test -d $(VENV_DIR) || $(PYTHON) -m venv $(VENV_DIR)
+	source $(VENV_DIR)/bin/activate && python -m pip install -e .[dev]
 	touch $(VENV_DIR)/bin/activate
 
 clean_venv:

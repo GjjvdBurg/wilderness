@@ -55,6 +55,8 @@ nitpick_ignore = [
     ("py:class", "argparse._MutuallyExclusiveGroup"),
     ("py:class", "argparse._ArgumentGroup"),
 ]
+if sys.version_info < (3, 9):
+    nitpick_ignore.append(("py:class", "TextIO"))
 
 # -- Options for HTML output -------------------------------------------------
 
