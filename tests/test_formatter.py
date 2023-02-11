@@ -12,7 +12,7 @@ This file is part of Wilderness.
 import sys
 import unittest
 
-from wilderness._argparse import ArgumentParser
+from wilderness.argparse_wrappers import ArgumentParser
 from wilderness.formatter import HelpFormatter
 
 
