@@ -19,18 +19,21 @@ from typing import List
 from typing import Optional
 from typing import TextIO
 
-from ._argparse import ArgumentParser
-from .command import Command
-from .documentable import DocumentableMixin
-from .formatter import HelpFormatter
-from .group import Group
-from .help import HelpCommand
-from .help import help_action_factory
-from .manpages import ManPage
+from wilderness.argparse_wrappers import ArgumentParser
+from wilderness.argparse_wrappers import MutuallyExclusiveGroupWrapper
+from wilderness.command import Command
+from wilderness.documentable import DocumentableMixin
+from wilderness.formatter import HelpFormatter
+from wilderness.group import Group
+from wilderness.help import HelpCommand
+from wilderness.help import help_action_factory
+from wilderness.manpages import ManPage
 
 
 class Application(DocumentableMixin):
     """Base class for applications
+
+    .. _FakeDF: https://github.com/GjjvdBurg/wilderness/tree/master/examples/fakedf
 
     This is the main Application object that Wilderness applications are
     expected to inherit from. All text that is supplied to the man pages, such
@@ -103,8 +106,6 @@ class Application(DocumentableMixin):
         Whether to automatically generate a section in the application man page
         that lists the available commands.
 
-    .. _FakeDF:
-        https://github.com/GjjvdBurg/wilderness/tree/master/examples/fakedf
 
     """
 
@@ -194,7 +195,7 @@ class Application(DocumentableMixin):
 
         Returns
         -------
-        commands : List[:class:`command.Command`]
+        commands : List[:class:`wilderness.command.Command`]
             The list of commands registered to the application.
 
         """
@@ -214,7 +215,7 @@ class Application(DocumentableMixin):
 
         Returns
         -------
-        groups: List[:class:`group.Group`]
+        groups: List[:class:`wilderness.group.Group`]
             The list of groups registered to the application
 
         """
@@ -241,7 +242,7 @@ class Application(DocumentableMixin):
 
     def add_mutually_exclusive_group(
         self, *args, **kwargs
-    ) -> argparse._MutuallyExclusiveGroup:
+    ) -> MutuallyExclusiveGroupWrapper:
         """Add a mutually exclusive group
 
         This wraps the `add_mutually_exclusive_group`_ from the argparse
@@ -252,8 +253,10 @@ class Application(DocumentableMixin):
 
         """
         assert self._parser is not None
-        group = self._parser.add_mutually_exclusive_group(*args, **kwargs)
-        return group
+        _meg = self._parser.add_mutually_exclusive_group(*args, **kwargs)
+        meg = MutuallyExclusiveGroupWrapper(_meg)
+        meg.command = self
+        return meg
 
     def add(self, command: Command):
         """Add a command to the application
@@ -263,7 +266,7 @@ class Application(DocumentableMixin):
 
         Parameters
         ----------
-        command : :class:`.command.Command`
+        command : :class:`wilderness.command.Command`
             The command to add to the application.
 
         """
@@ -298,7 +301,7 @@ class Application(DocumentableMixin):
 
         Returns
         -------
-        :class:`.group.Group`
+        :class:`wilderness.group.Group`
             The created command group.
 
         """
@@ -403,7 +406,7 @@ class Application(DocumentableMixin):
 
         Parameters
         ----------
-        command : :class:`.command.Command`
+        command : :class:`wilderness.command.Command`
             The command to execute
 
         Returns
@@ -425,7 +428,7 @@ class Application(DocumentableMixin):
 
         Returns
         -------
-        command : :class:`.command.Command`
+        command : :class:`wilderness.command.Command`
             The instance of the Command to be returned.
 
         Raises
@@ -474,7 +477,7 @@ class Application(DocumentableMixin):
 
         Returns
         -------
-        man_page : ManPage
+        man_page : :class:`wilderness.manpages.ManPage`
             The generated ManPage object.
 
         """

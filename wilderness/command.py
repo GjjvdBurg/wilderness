@@ -18,13 +18,13 @@ from typing import TYPE_CHECKING
 from typing import Dict
 from typing import Optional
 
-from ._argparse import ArgumentGroup
-from ._argparse import MutuallyExclusiveGroup
-from .documentable import DocumentableMixin
-from .manpages import ManPage
+from wilderness.argparse_wrappers import ArgumentGroupWrapper
+from wilderness.argparse_wrappers import MutuallyExclusiveGroupWrapper
+from wilderness.documentable import DocumentableMixin
+from wilderness.manpages import ManPage
 
 if TYPE_CHECKING:
-    from .application import Application
+    import wilderness.application
 
 
 class Command(DocumentableMixin, metaclass=abc.ABCMeta):
@@ -47,12 +47,12 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
         self._name = name
         self._title = title
 
-        self._args = None  # type: Optional[argparse.Namespace]
-        self._application = None  # type: Optional[Application]
+        self._args: Optional[argparse.Namespace] = None
+        self._application: Optional[wilderness.application.Application] = None
         self._add_help = add_help
 
     @property
-    def application(self) -> Optional["Application"]:
+    def application(self) -> Optional["wilderness.application.Application"]:
         return self._application
 
     @property
@@ -71,19 +71,19 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
         self._arg_help[action.dest] = description
         return action
 
-    def add_argument_group(self, *args, **kwargs) -> ArgumentGroup:
+    def add_argument_group(self, *args, **kwargs) -> ArgumentGroupWrapper:
         assert self._parser is not None
         _group = self._parser.add_argument_group(*args, **kwargs)
-        group = ArgumentGroup(_group)
+        group = ArgumentGroupWrapper(_group)
         group.command = self
         return group
 
     def add_mutually_exclusive_group(
         self, *args, **kwargs
-    ) -> MutuallyExclusiveGroup:
+    ) -> MutuallyExclusiveGroupWrapper:
         assert self._parser is not None
         _meg = self._parser.add_mutually_exclusive_group(*args, **kwargs)
-        meg = MutuallyExclusiveGroup(_meg)
+        meg = MutuallyExclusiveGroupWrapper(_meg)
         meg.command = self
         return meg
 

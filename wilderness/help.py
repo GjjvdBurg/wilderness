@@ -23,7 +23,7 @@ from typing import TYPE_CHECKING
 from .command import Command
 
 if TYPE_CHECKING:
-    from .application import Application
+    import wilderness.application
 
 
 class HelpCommand(Command):
@@ -60,7 +60,7 @@ class HelpCommand(Command):
         )
 
 
-def help_action_factory(app: "Application"):
+def help_action_factory(app: "wilderness.application.Application"):
     class HelpAction(argparse.Action):
         _app = app
 

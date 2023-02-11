@@ -18,7 +18,7 @@ from typing import List
 from typing import Optional
 
 if TYPE_CHECKING:
-    from wilderness.application import Application
+    import wilderness.application
 
 
 class ManPage:
@@ -216,12 +216,14 @@ class ManPage:
         return filename
 
 
-def build_manpages(app: "Application", output_directory: str = "man") -> None:
+def build_manpages(
+    app: "wilderness.application.Application", output_directory: str = "man"
+) -> None:
     """Write manpages to the output directory
 
     Parameters
     ----------
-    app : Application
+    app : :class:`wilderness.Application`
         The application for which to generate manpages.
 
     output_directory : str
