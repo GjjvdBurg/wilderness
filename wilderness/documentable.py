@@ -18,8 +18,8 @@ import argparse
 from typing import Dict
 from typing import Optional
 
-from .formatter import HelpFormatter
-from .manpages import ManPage
+from wilderness.formatter import HelpFormatter
+from wilderness.manpages import ManPage
 
 
 class DocumentableMixin(metaclass=abc.ABCMeta):

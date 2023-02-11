@@ -21,8 +21,8 @@ from typing import List
 from typing import Optional
 
 if TYPE_CHECKING:
-    from wilderness import Application
-    from wilderness import Command
+    import wilderness.application
+    import wilderness.command
 
 
 class Group:
@@ -30,11 +30,11 @@ class Group:
         self._title = title
         self._is_root = is_root
 
-        self._command_map = {}  # type: Dict[str, Command]
-        self._app = None  # type: Optional[Application]
+        self._command_map: Dict[str, wilderness.command.Command] = {}
+        self._app: Optional[wilderness.application.Application] = None
 
     @property
-    def application(self) -> Optional["Application"]:
+    def application(self) -> Optional["wilderness.application.Application"]:
         return self._app
 
     @property
@@ -42,7 +42,7 @@ class Group:
         return self._title
 
     @property
-    def commands(self) -> List["Command"]:
+    def commands(self) -> List["wilderness.command.Command"]:
         return list(self._command_map.values())
 
     @property
@@ -59,10 +59,10 @@ class Group:
             actions.append(action)
         return actions
 
-    def set_app(self, app: "Application") -> None:
+    def set_app(self, app: "wilderness.application.Application") -> None:
         self._app = app
 
-    def add(self, command: "Command") -> None:
+    def add(self, command: "wilderness.command.Command") -> None:
         self._command_map[command.name] = command
         assert self.application is not None
         self.application._add_command(command)

@@ -13,13 +13,13 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("."))
+sys.path.insert(0, os.path.abspath(".."))
 
 
 # -- Project information -----------------------------------------------------
 
 project = "wilderness"
-copyright = "2019, G.J.J. van den Burg"
+copyright = "2023, G.J.J. van den Burg"
 author = "G.J.J. van den Burg"
 
 
@@ -34,6 +34,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
+    "sphinx.ext.intersphinx",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -44,6 +45,16 @@ templates_path = ["_templates"]
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
+# Intersphinx mapping to Python builtins:
+intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
+
+# Nitpick mode
+nitpicky = True
+nitpick_ignore = [
+    ("py:class", "argparse.HelpFormatter"),
+    ("py:class", "argparse._MutuallyExclusiveGroup"),
+    ("py:class", "argparse._ArgumentGroup"),
+]
 
 # -- Options for HTML output -------------------------------------------------
 

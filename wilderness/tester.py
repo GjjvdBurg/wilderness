@@ -17,7 +17,7 @@ import io
 from typing import List
 from typing import Optional
 
-from .application import Application
+from wilderness.application import Application
 
 
 class Tester:

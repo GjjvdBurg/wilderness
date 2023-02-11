@@ -12,6 +12,14 @@ wilderness.application module
    :undoc-members:
    :show-inheritance:
 
+wilderness.argparse\_wrappers module
+------------------------------------
+
+.. automodule:: wilderness.argparse_wrappers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 wilderness.command module
 -------------------------
 

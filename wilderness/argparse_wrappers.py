@@ -17,7 +17,7 @@ from typing import TYPE_CHECKING
 from typing import Optional
 
 if TYPE_CHECKING:
-    from .command import Command
+    import wilderness.command
 
 
 class ArgumentParser(argparse.ArgumentParser):
@@ -34,17 +34,17 @@ class ArgumentParser(argparse.ArgumentParser):
             sys.exit(status)
 
 
-class ArgumentGroup:
+class ArgumentGroupWrapper:
     def __init__(self, group: argparse._ArgumentGroup):
         self._group = group
-        self._command = None  # type: Optional[Command]
+        self._command: Optional[wilderness.command.Command] = None
 
     @property
-    def command(self) -> Optional["Command"]:
+    def command(self) -> Optional["wilderness.command.Command"]:
         return self._command
 
     @command.setter
-    def command(self, command: "Command"):
+    def command(self, command: "wilderness.command.Command"):
         self._command = command
 
     def add_argument(self, *args, **kwargs):
@@ -55,17 +55,17 @@ class ArgumentGroup:
         return action
 
 
-class MutuallyExclusiveGroup:
+class MutuallyExclusiveGroupWrapper:
     def __init__(self, meg: argparse._MutuallyExclusiveGroup):
         self._meg = meg
-        self._command = None  # type: Optional[Command]
+        self._command: Optional[wilderness.command.Command] = None
 
     @property
-    def command(self) -> Optional["Command"]:
+    def command(self) -> Optional["wilderness.command.Command"]:
         return self._command
 
     @command.setter
-    def command(self, command: "Command"):
+    def command(self, command: "wilderness.command.Command"):
         self._command = command
 
     def add_argument(self, *args, **kwargs):

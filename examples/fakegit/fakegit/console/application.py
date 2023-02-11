@@ -11,7 +11,6 @@ from .commands import InitCommand
 
 
 class FakeGitApplication(Application):
-
     _description = (
         "FakeGit is a fast, scalable, distributed revision control system "
         "with an unusually rich command set that provides both high-level "
