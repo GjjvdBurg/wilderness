@@ -23,7 +23,7 @@ REQUIRED = []
 
 docs_require = ["sphinx", "sphinx-rtd-theme", "m2r2"]
 test_require = ["green", "mypy"]
-dev_require = []
+dev_require = ["pytest>=2.6"]
 
 # What packages are optional?
 EXTRAS = {
