@@ -10,6 +10,8 @@ from wilderness.tester import Tester
 
 
 class TestApp(Application):
+    __test__ = False # for Pytest users
+
     def __init__(self):
         super().__init__(
             "testapp",

@@ -21,6 +21,8 @@ from wilderness.application import Application
 
 
 class Tester:
+    __test__ = False # for Pytest users
+
     def __init__(self, app: Application) -> None:
         self._app = app
 
