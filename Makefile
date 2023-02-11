@@ -45,15 +45,20 @@ dist: ## Make Python source distribution
 
 .PHONY: test mypy
 
-test: venv ## Run unit tests in virtual environment
+test: green pytest mypy
+
+green: venv ## Run unit tests in virtual environment
 	source $(VENV_DIR)/bin/activate && \
-		green -vv -s 1 -a ./tests && \
-		mypy --check-untyped-defs $(PACKAGE)
+		green -vv -s 1 -a ./tests
 
 test_direct: ## Run unit tests directly (without virtualenv)
 	$(PYTHON) -m pip install .[tests] && \
 		$(PYTHON) -m unittest discover && \
 		mypy --check-untyped-defs $(PACKAGE)
+
+pytest: venv ## Tun unit tests with PyTest
+	source $(VENV_DIR)/bin/activate && \
+		pytest -ra -m 'not network'
 
 mypy: venv ## Run mypy
 	source $(VENV_DIR)/bin/activate && mypy --check-untyped-defs $(PACKAGE)
