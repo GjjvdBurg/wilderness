@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.1.10
+
+* Rename `_argparse.py` module to `argparse_wrappers.py`
+* Ensure PyTest doesn't think certain classes are test cases
+* Various code quality fixes (thanks to @kloczek)
+
 ## Version 0.1.9
 
 * Add MANIFEST.in file to package for more complete packaging (thanks to 
