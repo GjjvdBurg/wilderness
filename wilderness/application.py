@@ -20,7 +20,6 @@ from typing import Optional
 from typing import TextIO
 
 from wilderness.argparse_wrappers import ArgumentParser
-from wilderness.argparse_wrappers import MutuallyExclusiveGroupWrapper
 from wilderness.command import Command
 from wilderness.documentable import DocumentableMixin
 from wilderness.formatter import HelpFormatter

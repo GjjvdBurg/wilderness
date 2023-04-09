@@ -18,8 +18,8 @@ from typing import TYPE_CHECKING
 from typing import Dict
 from typing import Optional
 
-from wilderness.argparse_wrappers import ArgumentGroupWrapper
-from wilderness.argparse_wrappers import MutuallyExclusiveGroupWrapper
+from wilderness.argparse_wrappers import ArgumentGroup
+from wilderness.argparse_wrappers import MutuallyExclusiveGroup
 from wilderness.documentable import DocumentableMixin
 from wilderness.manpages import ManPage
 
@@ -71,19 +71,19 @@ class Command(DocumentableMixin, metaclass=abc.ABCMeta):
         self._arg_help[action.dest] = description
         return action
 
-    def add_argument_group(self, *args, **kwargs) -> ArgumentGroupWrapper:
+    def add_argument_group(self, *args, **kwargs) -> ArgumentGroup:
         assert self._parser is not None
         _group = self._parser.add_argument_group(*args, **kwargs)
-        group = ArgumentGroupWrapper(_group)
+        group = ArgumentGroup(_group)
         group.command = self
         return group
 
     def add_mutually_exclusive_group(
         self, *args, **kwargs
-    ) -> MutuallyExclusiveGroupWrapper:
+    ) -> MutuallyExclusiveGroup:
         assert self._parser is not None
         _meg = self._parser.add_mutually_exclusive_group(*args, **kwargs)
-        meg = MutuallyExclusiveGroupWrapper(_meg)
+        meg = MutuallyExclusiveGroup(_meg)
         meg.command = self
         return meg
 

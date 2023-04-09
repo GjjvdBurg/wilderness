@@ -34,7 +34,7 @@ class ArgumentParser(argparse.ArgumentParser):
             sys.exit(status)
 
 
-class ArgumentGroupWrapper:
+class ArgumentGroup:
     def __init__(self, group: argparse._ArgumentGroup):
         self._group = group
         self._command: Optional[wilderness.command.Command] = None
@@ -55,7 +55,7 @@ class ArgumentGroupWrapper:
         return action
 
 
-class MutuallyExclusiveGroupWrapper:
+class MutuallyExclusiveGroup:
     def __init__(self, meg: argparse._MutuallyExclusiveGroup):
         self._meg = meg
         self._command: Optional[wilderness.command.Command] = None
