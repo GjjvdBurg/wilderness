@@ -17,16 +17,16 @@ jobs:
         # Can add others if deemed necessary
         os: [ 'ubuntu-latest' ]
         # minimal and latest
-        py: [ '3.7', '3.11' ]
+        py: [ '3.10', '3.15' ]
 
     steps:
       - name: Install Python ${{ matrix.py }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.py }}
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run unit tests
         run: make test_direct
