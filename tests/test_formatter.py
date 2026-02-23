@@ -79,9 +79,10 @@ class HelpFormatterTestCase(unittest.TestCase):
         thehelp = parser.format_help()
 
         minor = sys.version_info.minor
+        synopsis = "[-p | --plain | -j | --json]" if minor < 14 else "[-h] [-p | -j]"
         optstr = "options" if minor >= 10 else "optional arguments"
         exp = (
-            f"usage: test [-p | --plain | -j | --json]\n\n{optstr}:\n"
+            f"usage: test {synopsis}\n\n{optstr}:\n"
             "  -h, --help   show this help message and exit\n"
             "  -p, --plain  plain help\n"
             "  -j, --json   json help\n"
